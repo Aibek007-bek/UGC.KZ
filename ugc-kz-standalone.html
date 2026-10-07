@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UGC.KZ — a creator for your brand</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
+<style>
+/* UGC.KZ — стили (brand book: #0D5BD7 / #3B82F6 / #E6F0FF, Poppins + Inter) */
+:root{--b:#0D5BD7;--bd:#0a47ac;--s2:#3B82F6;--bs:#E6F0FF;--ink:#0f1b3d;--mut:#5b6b8c;--line:#d6e3fb;--bg:#f6f9ff}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,select,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+.w{max-width:1100px;margin:0 auto;padding:0 24px}
+header{padding-top:env(safe-area-inset-top,0px);background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+header .w{display:flex;align-items:center;gap:24px;height:66px}
+.logo{font-weight:800;font-size:23px;letter-spacing:-.8px;cursor:pointer}.logo b{color:var(--b)}
+nav{display:flex;gap:20px;font-size:14px;color:var(--mut)}nav a{cursor:pointer}nav a:hover,nav a.on{color:var(--b)}
+.sp{flex:1}
+.btn{border:1px solid var(--b);background:var(--b);color:#fff;border-radius:10px;padding:10px 18px;font-weight:600;font-size:14px}
+.btn:hover{background:var(--bd)}
+.btn.o{background:#fff;color:var(--b)}.btn.o:hover{background:var(--bs)}
+.btn.g{border-color:var(--line);color:var(--ink);background:#fff}
+.btn.sm{padding:7px 12px;font-size:13px}
+.hb{position:relative;width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:18px;color:var(--b)}
+.hb i{position:absolute;top:-6px;right:-6px;background:var(--b);color:#fff;border-radius:99px;font:600 11px/1 system-ui;padding:3px 6px;font-style:normal}
+.hero{background:linear-gradient(180deg,#fff,var(--bs));padding:60px 0 54px;border-bottom:1px solid var(--line)}
+.hero .w{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+h1{font-size:clamp(32px,5vw,50px);line-height:1.1;letter-spacing:-1.5px}h1 em{font-style:normal;color:var(--b)}
+.lead{color:var(--mut);margin:16px 0 26px;max-width:470px}
+.sbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 10px 30px rgba(31,92,240,.08)}
+.sbox .r{display:flex;gap:8px}.sbox input{flex:1;border:0;outline:0;padding:0 8px;min-width:0}
+.sel{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+select{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px}.stat b{display:block;font-size:30px;color:var(--b);letter-spacing:-1px}.stat span{color:var(--mut);font-size:13px}
+.sec{padding:40px 0}.row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}h2{font-size:22px;letter-spacing:-.5px}
+.link{color:var(--b);background:none;border:0;font-size:14px}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.cat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 10px;font-size:14px;text-align:center}
+.cat:hover,.cat.on{border-color:var(--b);background:var(--bs);color:var(--bd)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer}
+.card:hover{border-color:var(--b);box-shadow:0 8px 24px rgba(31,92,240,.12)}
+.ph{height:150px;position:relative;display:grid;place-items:center;font-size:52px;font-weight:800;color:rgba(255,255,255,.9)}
+.heart{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;color:var(--mut);font-size:16px}.heart.on{color:#e0245e}
+.cb{padding:14px}.top{display:flex;justify-content:space-between;font-weight:600}.top small{color:var(--mut);font-weight:400}
+.meta{font-size:12px;color:var(--mut);margin:3px 0 9px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}.chips span{background:var(--bs);color:var(--bd);border-radius:6px;padding:2px 8px;font-size:11px}
+.pr{font-weight:700}.pr small{font-weight:400;color:var(--mut);font-size:11px;margin-left:4px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.why div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}.why b{display:block;margin-bottom:4px}.why p{color:var(--mut);font-size:14px}
+.cta{background:var(--b);color:#fff;border-radius:18px;padding:34px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.cta h2{max-width:480px}.cta .btn{background:#fff;color:var(--b);border-color:#fff}
+.cat-l{display:grid;grid-template-columns:240px 1fr;gap:26px;padding:30px 0 50px;align-items:start}
+.side{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;position:sticky;top:84px}
+.side label{font-size:12px;color:var(--mut);display:grid;gap:4px}.side select,.side input[type=text]{width:100%}
+.side input[type=text]{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+.ck{display:flex!important;align-items:center;gap:8px;font-size:13px!important;color:var(--ink)!important}
+.empty{grid-column:1/-1;background:#fff;border:1px dashed var(--line);border-radius:14px;padding:40px;text-align:center;color:var(--mut)}
+.pf{display:grid;grid-template-columns:1fr 320px;gap:24px;padding:26px 0 50px;align-items:start}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px}
+.hd{display:flex;gap:18px;align-items:center}.av{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:34px;font-weight:800;color:#fff;flex:none}
+.hd h1{font-size:26px;letter-spacing:-.5px}
+.port{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.port div{aspect-ratio:3/4;border-radius:10px;display:grid;place-items:center;color:rgba(255,255,255,.9);font-size:26px}
+.rv{border-top:1px solid var(--line);padding:12px 0}.rv:first-of-type{border:0}.rv small{color:var(--mut)}
+.pk{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.fm{max-width:430px;margin:50px auto}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--bs);border-radius:10px;padding:4px;margin-bottom:18px}
+.tabs button{border:0;background:none;border-radius:8px;padding:9px;font-weight:600;color:var(--mut)}.tabs button.on{background:#fff;color:var(--b);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.fm form{display:grid;gap:12px}.fm label{font-size:13px;color:var(--mut);display:grid;gap:4px}
+input.i,textarea.i{border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%;background:#fff}
+.err{color:#d12f3f;font-size:13px;min-height:18px}
+#modal{position:fixed;inset:0;background:rgba(15,27,61,.5);display:none;place-items:center;z-index:50;padding:20px}
+#modal.on{display:grid}.mb{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:440px;display:grid;gap:12px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;transition:.3s;z-index:60;opacity:0}
+#toast.on{transform:translateX(-50%);opacity:1}
+footer{border-top:1px solid var(--line);background:#fff;padding:22px 0;color:var(--mut);font-size:13px}
+.ph2{background:linear-gradient(180deg,#fff,var(--bs));border-bottom:1px solid var(--line);padding:44px 0 34px}
+.ph2 p{color:var(--mut);max-width:620px;margin-top:10px}
+.tw{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--bs);color:var(--bd);font-weight:600}tr:last-child td{border:0}td:first-child{font-weight:600;min-width:170px}
+.bar{margin-bottom:14px}.bar div{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+.bar i{display:block;height:10px;background:var(--bs);border-radius:99px;overflow:hidden}.bar i b{display:block;height:100%;background:var(--b);border-radius:99px}
+.ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.ins div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}.ins b{display:block;color:var(--b);font-size:22px;margin-bottom:4px}
+.rm{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;align-items:start}
+.col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}.col h3{font-size:17px;margin-bottom:12px}
+.ft{border-top:1px solid var(--line);padding:11px 0}.ft:first-of-type{border:0}.ft b{display:block;font-size:14px}.ft span{font-size:12px;color:var(--mut)}
+.tg{display:inline-block;background:var(--bs);color:var(--bd);border-radius:6px;padding:1px 7px;font-size:11px;margin-left:6px}
+@media(max-width:820px){header .w{flex-wrap:wrap;height:auto;gap:10px 14px;padding-top:12px;padding-bottom:8px}nav{order:3;width:100%;overflow-x:auto;white-space:nowrap;gap:20px;padding-bottom:4px}.sp{display:none}header .w>.logo{flex:1}.hero .w,.cat-l,.pf{grid-template-columns:1fr}.side{position:static}}
+h1,h2,h3,.logo,.btn,.tabs button{font-family:Poppins,Inter,sans-serif}
+h1{color:var(--b)}h1 em{color:var(--s2)}
+.logo{display:flex;align-items:center;gap:8px;color:var(--b);line-height:1}
+.logo span{display:block;font:300 24px Poppins,sans-serif;letter-spacing:-.5px}.logo span b{font-weight:700;color:var(--b)}
+.logo small{display:block;font:500 7px Inter,sans-serif;letter-spacing:.8px;margin-top:3px;color:var(--b)}
+.btn{border-radius:99px;padding:10px 22px}.btn.sm{padding:7px 16px}
+.hero{background:linear-gradient(180deg,#fff,var(--bs))}
+.vis{background:radial-gradient(circle at 85% 90%,rgba(255,255,255,.25) 0 60px,transparent 61px),linear-gradient(135deg,var(--b),var(--s2));border-radius:20px;min-height:270px;display:grid;place-items:center;overflow:hidden}
+.ph0{width:132px;height:232px;border-radius:24px;background:#0b1530;border:3px solid #1b2a55;display:grid;place-items:center}
+.ph0 i{width:48px;height:48px;border-radius:50%;background:#fff;color:var(--b);display:grid;place-items:center;font-style:normal}
+.fs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;text-align:center}
+.fs div{font:600 13px Poppins,sans-serif;color:var(--bd)}.fs svg{display:block;margin:0 auto 8px}
+.cta{background:linear-gradient(135deg,var(--b),var(--s2))}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+a{color:inherit;text-decoration:none}
+.port .vt{aspect-ratio:3/4;border-radius:10px;background:#0b1530;color:#fff;display:flex;flex-direction:column;overflow:hidden;text-decoration:none;font-size:13px}
+.vt video{width:100%;flex:1;min-height:0;object-fit:cover;background:#000}
+.vt span{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 9px}
+.vt .link{color:#fff;padding:0 4px}
+
+/* Тіл таңдау */
+.lang{border-radius:99px;padding:7px 12px;font-weight:600;font-size:13px;color:var(--b);border-color:var(--line);cursor:pointer}
+
+</style>
+</head>
+<body>
+<header><div class="w">
+  <a class="logo" href="#/" data-go="/"><svg width="34" height="34" viewBox="-9 -9 18 18" fill="#0D5BD7" aria-hidden="true"><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(0)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(45)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(90)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(135)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(180)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(225)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(270)"/><path d="M0-3.5C4-4 6.5-1.5 5.5 2C3.5 0 2 -1 0 -1Z" transform="rotate(315)"/></svg><div><span>UGC.<b>KZ</b></span><small>A CREATOR FOR YOUR BRAND</small></div></a>
+  <nav><a href="#/" data-go="/" id="n1" data-i18n="nav_home">Главная</a><a href="#/catalog" data-go="/catalog" id="n2" data-i18n="nav_creators">Креаторы</a><a href="#/brands" data-go="/brands" data-i18n="nav_brands">Бренды</a><a href="#/about" data-go="/about" data-i18n="nav_about">О нас</a></nav>
+  <div class="sp"></div>
+  <select id="lang" class="lang" aria-label="Language"><option value="kk">Қазақша</option><option value="ru">Русский</option><option value="en">English</option></select>
+  <button class="hb" id="favb" data-i18n-aria="favs" aria-label="Избранное">♡<i id="fc">0</i></button>
+  <span id="auth"></span>
+</div></header>
+<main id="app"></main>
+<footer><div class="w" style="display:flex;flex-wrap:wrap;gap:8px 22px"><span data-i18n="foot">© 2026 UGC.KZ — креаторы Казахстана</span><a href="#/catalog" class="link" data-go="/catalog" data-i18n="nav_creators">Креаторы</a><a href="#/brands" class="link" data-go="/brands" data-i18n="nav_brands">Бренды</a><a href="#/about" class="link" data-go="/about" data-i18n="nav_about">О нас</a></div></footer>
+<div id="modal"><div class="mb" id="mb"></div></div>
+<div id="toast"></div>
+
+<script>
+/* Көптілділік: kk — Қазақша, ru — Русский, en — English */
+const LANGS={kk:"Қазақша",ru:"Русский",en:"English"};
+const LOCALE={kk:"ru-RU",ru:"ru-RU",en:"en-US"};
+const D={
+ru:{
+nav_home:"Главная",nav_creators:"Креаторы",nav_brands:"Бренды",nav_about:"О нас",favs:"Избранное",
+foot:"© 2026 UGC.KZ — креаторы Казахстана",logout:"Выйти",login:"Войти",register:"Регистрация",
+new:"Новый",from:"от {p}",per_video:"за видео",fav_aria:"В избранное",
+hero_a:"Креаторы",hero_b:"для вашего бренда",
+lead:"UGC.KZ — платформа, которая объединяет бренды и креаторов из 18 городов Казахстана. Создавайте контент, который работает.",
+search_ph:"Что вы ищете?",search_aria:"Поиск",start:"Начать",city:"Город",category:"Категория",price:"Цена",ctype:"Тип контента",upto:"до {p}",
+f1:"Найти креаторов",f2:"Проверенные профили",f3:"Быстрый старт",f4:"Рост вашего бренда",
+pop_cats:"Популярные категории",all_cats:"Все категории →",cities:"Города",pop_cr:"Популярные креаторы",see_all:"Смотреть всех →",
+no_cr_first:"Креаторов пока нет. Станьте первым.",create_profile:"Создать профиль",why:"Почему выбирают нас?",
+w1t:"Экономия времени",w1d:"Все креаторы в одном месте.",w2t:"Проверенные креаторы",w2d:"Реальные профили и отзывы.",
+w3t:"Удобные фильтры",w3d:"По городу, цене и категории.",w4t:"Безопасная сделка",w4d:"Прямой контакт и онлайн-оплата.",
+cta_cr:"Вы креатор? Получайте заказы от брендов",
+filters:"Фильтры",search:"Поиск",name_topic:"Имя или тема",all:"Все",any:"Любая",sort:"Сортировка",by_rating:"По рейтингу",cheaper:"Сначала дешевле",
+only_fav:"Только избранное",reset:"Сбросить",creators_h:"Креаторы",found:"Найдено: {n}",nobody:"Никого не нашли.",none_yet:"Креаторов пока нет.",reset_f:"Сбросить фильтры",
+back:"← Назад к каталогу",reviews_n:"★ {r} ({c} отзывов)",new_cr:"Новый креатор",portfolio:"Портфолио",add_video:"Добавить видео",del_video:"Удалить видео",
+no_videos:"Видео пока нет.",video_unavail:"Видео недоступно",reviews:"Отзывы",no_reviews:"Отзывов пока нет.",cost:"Стоимость",video_ugc:"Видео (UGC)",
+photo_set:"Фото-набор",contact:"Связаться",del_profile:"Удалить профиль",in_fav:"♥ В избранном",add_fav:"♡ В избранное",
+def_bio:"Креатор UGC.KZ. Расскажите о себе брендам.",
+title_l:"Название",title_ph:"Например: Обзор кофе",file_l:"Файл видео (до 100 МБ)",or_link:"или ссылка на видео",cancel:"Отмена",add:"Добавить",
+e_pick:"Выберите файл или вставьте ссылку.",e_link:"Ссылка должна начинаться с http:// или https://",e_big:"Файл больше 100 МБ.",
+e_save:"Не удалось сохранить файл. Попробуйте ссылку или файл меньше.",def_vtitle:"Видео",video_added:"Видео добавлено",video_deleted:"Видео удалено",
+login_first:"Сначала войдите в аккаунт",write_to:"Написать {n}",describe:"Опишите задачу",desc_ph:"Например: нужен обзор кофе, 2 видео",send:"Отправить",
+e_desc:"Опишите задачу хотя бы парой слов.",sent:"Сообщение отправлено {n}",profile_deleted:"Профиль удалён",logged_out:"Вы вышли",
+tab_in:"Вход",tab_reg:"Регистрация",i_biz:"Я бизнес",i_cr:"Я креатор",name:"Имя",brand_name:"Название бренда",your_name:"Ваше имя",
+price_video:"Цена за видео, ₸",email:"Email",password:"Пароль",pass_ph:"Минимум 6 символов",create_acc:"Создать аккаунт",
+e_email:"Введите корректный email.",e_pass:"Пароль — минимум 6 символов.",e_name:"Укажите имя.",e_price:"Укажите цену от 1 000 ₸.",
+logged_in:"Вы вошли",acc_created:"Аккаунт создан",
+brands_t:"Бренды",brands_lead:"Найдите креатора в своём городе, сразу увидьте цену и портфолио и свяжитесь напрямую.",get_h:"Что вы получаете",
+g1t:"18 городов",g1d:"Креаторы рядом с вашей аудиторией.",g2t:"Цена и портфолио",g2d:"Всё видно в профиле, без переписки.",
+g3t:"Прямая связь",g3d:"Пишите креатору без посредников.",g4t:"Избранное",g4d:"Сравнивайте несколько креаторов в одном списке.",
+how_h:"Как это работает",s1t:"Выберите город и категорию",s1d:"Фильтры по 18 городам, категории, цене и типу контента.",
+s2t:"Сравните креаторов",s2d:"Смотрите цену и портфолио, сохраняйте понравившихся в избранное.",
+s3t:"Напишите задачу",s3d:"Опишите, какой контент нужен, и отправьте сообщение креатору.",s4t:"Получите контент",s4d:"Договоритесь об условиях и сроках напрямую.",
+cta_b:"Готовы найти креатора для вашего бренда?",open_cat:"Открыть каталог",reg_brand:"Зарегистрировать бренд",
+about_t:"О нас",about_lead:"UGC.KZ — платформа, которая объединяет бренды и креаторов Казахстана. Создавайте контент, который работает.",
+st1:"городов Казахстана",st2:"регистрация для бизнеса",idea_h:"Наша идея",
+idea:"Бизнесу сложно найти креатора: приходится искать по соцсетям и писать каждому лично. Мы собрали креаторов в одном месте: с фильтрами по городу, категории, цене и типу контента, с портфолио и прямой связью. Креаторы получают заказы от брендов, а бренды экономят время.",
+contacts:"Контакты",site:"Сайт",mail:"Почта"},
+kk:{
+nav_home:"Басты бет",nav_creators:"Креаторлар",nav_brands:"Брендтер",nav_about:"Біз туралы",favs:"Таңдаулылар",
+foot:"© 2026 UGC.KZ — Қазақстан креаторлары",logout:"Шығу",login:"Кіру",register:"Тіркелу",
+new:"Жаңа",from:"{p} бастап",per_video:"бейне үшін",fav_aria:"Таңдаулыларға қосу",
+hero_a:"Креаторлар",hero_b:"брендіңіз үшін",
+lead:"UGC.KZ — Қазақстанның 18 қаласындағы брендтер мен креаторларды біріктіретін платформа. Жұмыс істейтін контент жасаңыз.",
+search_ph:"Не іздеп жатырсыз?",search_aria:"Іздеу",start:"Бастау",city:"Қала",category:"Санат",price:"Баға",ctype:"Контент түрі",upto:"{p} дейін",
+f1:"Креаторларды табу",f2:"Тексерілген профильдер",f3:"Жылдам бастау",f4:"Брендіңіздің өсуі",
+pop_cats:"Танымал санаттар",all_cats:"Барлық санаттар →",cities:"Қалалар",pop_cr:"Танымал креаторлар",see_all:"Барлығын көру →",
+no_cr_first:"Креаторлар әзірге жоқ. Бірінші болыңыз.",create_profile:"Профиль жасау",why:"Неге бізді таңдайды?",
+w1t:"Уақытты үнемдеу",w1d:"Барлық креаторлар бір жерде.",w2t:"Тексерілген креаторлар",w2d:"Нақты профильдер мен пікірлер.",
+w3t:"Ыңғайлы сүзгілер",w3d:"Қала, баға және санат бойынша.",w4t:"Қауіпсіз мәміле",w4d:"Тікелей байланыс және онлайн төлем.",
+cta_cr:"Сіз креаторсыз ба? Брендтерден тапсырыс алыңыз",
+filters:"Сүзгілер",search:"Іздеу",name_topic:"Аты немесе тақырыбы",all:"Барлығы",any:"Кез келген",sort:"Сұрыптау",by_rating:"Рейтинг бойынша",cheaper:"Алдымен арзандары",
+only_fav:"Тек таңдаулылар",reset:"Тазалау",creators_h:"Креаторлар",found:"Табылды: {n}",nobody:"Ешкім табылмады.",none_yet:"Креаторлар әзірге жоқ.",reset_f:"Сүзгілерді тазалау",
+back:"← Каталогқа оралу",reviews_n:"★ {r} ({c} пікір)",new_cr:"Жаңа креатор",portfolio:"Портфолио",add_video:"Бейне қосу",del_video:"Бейнені жою",
+no_videos:"Бейнелер әзірге жоқ.",video_unavail:"Бейне қолжетімсіз",reviews:"Пікірлер",no_reviews:"Пікірлер әзірге жоқ.",cost:"Құны",video_ugc:"Бейне (UGC)",
+photo_set:"Фото жинағы",contact:"Байланысу",del_profile:"Профильді жою",in_fav:"♥ Таңдаулыларда",add_fav:"♡ Таңдаулыларға",
+def_bio:"UGC.KZ креаторы. Өзіңіз туралы брендтерге айтыңыз.",
+title_l:"Атауы",title_ph:"Мысалы: Кофе шолуы",file_l:"Бейне файлы (100 МБ дейін)",or_link:"немесе бейне сілтемесі",cancel:"Бас тарту",add:"Қосу",
+e_pick:"Файлды таңдаңыз немесе сілтемені қойыңыз.",e_link:"Сілтеме http:// немесе https:// деп басталуы керек.",e_big:"Файл 100 МБ-тан үлкен.",
+e_save:"Файлды сақтау мүмкін болмады. Сілтемені немесе кішірек файлды қолданып көріңіз.",def_vtitle:"Бейне",video_added:"Бейне қосылды",video_deleted:"Бейне жойылды",
+login_first:"Алдымен аккаунтқа кіріңіз",write_to:"{n} деген креаторға жазу",describe:"Тапсырманы сипаттаңыз",desc_ph:"Мысалы: кофе шолуы керек, 2 бейне",send:"Жіберу",
+e_desc:"Тапсырманы кемінде бірнеше сөзбен сипаттаңыз.",sent:"Хабарлама жіберілді: {n}",profile_deleted:"Профиль жойылды",logged_out:"Сіз шықтыңыз",
+tab_in:"Кіру",tab_reg:"Тіркелу",i_biz:"Мен бизнеспін",i_cr:"Мен креатормын",name:"Аты",brand_name:"Бренд атауы",your_name:"Сіздің атыңыз",
+price_video:"Бейне бағасы, ₸",email:"Email",password:"Құпиясөз",pass_ph:"Кемінде 6 таңба",create_acc:"Аккаунт жасау",
+e_email:"Дұрыс email енгізіңіз.",e_pass:"Құпиясөз кемінде 6 таңбадан тұруы керек.",e_name:"Атыңызды көрсетіңіз.",e_price:"Бағаны 1 000 ₸-ден бастап көрсетіңіз.",
+logged_in:"Сіз кірдіңіз",acc_created:"Аккаунт жасалды",
+brands_t:"Брендтер",brands_lead:"Өз қалаңыздан креатор табыңыз, бағасы мен портфолиосын бірден көріп, тікелей байланысыңыз.",get_h:"Сіз не аласыз",
+g1t:"18 қала",g1d:"Аудиторияңызға жақын креаторлар.",g2t:"Баға және портфолио",g2d:"Бәрі профильде көрінеді, хат алмасусыз.",
+g3t:"Тікелей байланыс",g3d:"Креаторға делдалсыз жазыңыз.",g4t:"Таңдаулылар",g4d:"Бірнеше креаторды бір тізімде салыстырыңыз.",
+how_h:"Бұл қалай жұмыс істейді",s1t:"Қала мен санатты таңдаңыз",s1d:"18 қала, санат, баға және контент түрі бойынша сүзгілер.",
+s2t:"Креаторларды салыстырыңыз",s2d:"Баға мен портфолионы қараңыз, ұнағандарын таңдаулыларға сақтаңыз.",
+s3t:"Тапсырманы жазыңыз",s3d:"Қандай контент керек екенін сипаттап, креаторға хабарлама жіберіңіз.",s4t:"Контентті алыңыз",s4d:"Шарттар мен мерзімдерді тікелей келісіңіз.",
+cta_b:"Брендіңізге креатор табуға дайынсыз ба?",open_cat:"Каталогты ашу",reg_brand:"Брендті тіркеу",
+about_t:"Біз туралы",about_lead:"UGC.KZ — Қазақстанның брендтері мен креаторларын біріктіретін платформа. Жұмыс істейтін контент жасаңыз.",
+st1:"Қазақстан қалалары",st2:"бизнес үшін тіркелу",idea_h:"Біздің идея",
+idea:"Бизнеске креатор табу қиын: әлеуметтік желілерден іздеп, әрқайсысына жеке жазуға тура келеді. Біз креаторларды бір жерге жинадық: қала, санат, баға және контент түрі бойынша сүзгілермен, портфолиомен және тікелей байланыспен. Креаторлар брендтерден тапсырыс алады, ал брендтер уақытын үнемдейді.",
+contacts:"Байланыс",site:"Сайт",mail:"Пошта"},
+en:{
+nav_home:"Home",nav_creators:"Creators",nav_brands:"Brands",nav_about:"About us",favs:"Favorites",
+foot:"© 2026 UGC.KZ — creators of Kazakhstan",logout:"Log out",login:"Log in",register:"Sign up",
+new:"New",from:"from {p}",per_video:"per video",fav_aria:"Add to favorites",
+hero_a:"Creators",hero_b:"for your brand",
+lead:"UGC.KZ is a platform that connects brands with creators from 18 cities of Kazakhstan. Create content that works.",
+search_ph:"What are you looking for?",search_aria:"Search",start:"Start",city:"City",category:"Category",price:"Price",ctype:"Content type",upto:"up to {p}",
+f1:"Find creators",f2:"Verified profiles",f3:"Quick start",f4:"Grow your brand",
+pop_cats:"Popular categories",all_cats:"All categories →",cities:"Cities",pop_cr:"Popular creators",see_all:"View all →",
+no_cr_first:"No creators yet. Be the first.",create_profile:"Create profile",why:"Why choose us?",
+w1t:"Save time",w1d:"All creators in one place.",w2t:"Verified creators",w2d:"Real profiles and reviews.",
+w3t:"Handy filters",w3d:"By city, price and category.",w4t:"Safe deals",w4d:"Direct contact and online payment.",
+cta_cr:"Are you a creator? Get orders from brands",
+filters:"Filters",search:"Search",name_topic:"Name or topic",all:"All",any:"Any",sort:"Sort by",by_rating:"By rating",cheaper:"Cheapest first",
+only_fav:"Favorites only",reset:"Reset",creators_h:"Creators",found:"Found: {n}",nobody:"No one found.",none_yet:"No creators yet.",reset_f:"Reset filters",
+back:"← Back to catalog",reviews_n:"★ {r} ({c} reviews)",new_cr:"New creator",portfolio:"Portfolio",add_video:"Add video",del_video:"Delete video",
+no_videos:"No videos yet.",video_unavail:"Video unavailable",reviews:"Reviews",no_reviews:"No reviews yet.",cost:"Pricing",video_ugc:"Video (UGC)",
+photo_set:"Photo set",contact:"Contact",del_profile:"Delete profile",in_fav:"♥ In favorites",add_fav:"♡ Add to favorites",
+def_bio:"UGC.KZ creator. Tell brands about yourself.",
+title_l:"Title",title_ph:"E.g. Coffee review",file_l:"Video file (up to 100 MB)",or_link:"or a video link",cancel:"Cancel",add:"Add",
+e_pick:"Choose a file or paste a link.",e_link:"The link must start with http:// or https://",e_big:"The file is larger than 100 MB.",
+e_save:"Could not save the file. Try a link or a smaller file.",def_vtitle:"Video",video_added:"Video added",video_deleted:"Video deleted",
+login_first:"Please log in first",write_to:"Write to {n}",describe:"Describe your task",desc_ph:"E.g. need a coffee review, 2 videos",send:"Send",
+e_desc:"Describe the task in at least a few words.",sent:"Message sent to {n}",profile_deleted:"Profile deleted",logged_out:"You logged out",
+tab_in:"Log in",tab_reg:"Sign up",i_biz:"I'm a business",i_cr:"I'm a creator",name:"Name",brand_name:"Brand name",your_name:"Your name",
+price_video:"Price per video, ₸",email:"Email",password:"Password",pass_ph:"At least 6 characters",create_acc:"Create account",
+e_email:"Enter a valid email.",e_pass:"Password must be at least 6 characters.",e_name:"Enter your name.",e_price:"Enter a price from 1,000 ₸.",
+logged_in:"You logged in",acc_created:"Account created",
+brands_t:"Brands",brands_lead:"Find a creator in your city, see the price and portfolio right away and get in touch directly.",get_h:"What you get",
+g1t:"18 cities",g1d:"Creators close to your audience.",g2t:"Price and portfolio",g2d:"Everything is visible in the profile, no back-and-forth.",
+g3t:"Direct contact",g3d:"Message the creator without intermediaries.",g4t:"Favorites",g4d:"Compare several creators in one list.",
+how_h:"How it works",s1t:"Choose a city and category",s1d:"Filters by 18 cities, category, price and content type.",
+s2t:"Compare creators",s2d:"Check prices and portfolios, save the ones you like to favorites.",
+s3t:"Write your task",s3d:"Describe what content you need and message the creator.",s4t:"Get your content",s4d:"Agree on terms and deadlines directly.",
+cta_b:"Ready to find a creator for your brand?",open_cat:"Open catalog",reg_brand:"Register your brand",
+about_t:"About us",about_lead:"UGC.KZ is a platform that connects brands and creators of Kazakhstan. Create content that works.",
+st1:"cities of Kazakhstan",st2:"free registration for business",idea_h:"Our idea",
+idea:"It's hard for a business to find a creator: you have to search social networks and message each one personally. We gathered creators in one place, with filters by city, category, price and content type, portfolios and direct contact. Creators get orders from brands, and brands save time.",
+contacts:"Contacts",site:"Website",mail:"Email"}
+};
+/* Қала, санат, түр атаулары (ішкі мән орысша қалады, көрсетілуі тілге қарай) */
+const NM={
+city:{kk:{"Актау":"Ақтау","Актобе":"Ақтөбе","Жезказган":"Жезқазған","Караганда":"Қарағанды","Кокшетау":"Көкшетау","Костанай":"Қостанай","Кызылорда":"Қызылорда","Петропавловск":"Петропавл","Талдыкорган":"Талдықорған","Уральск":"Орал","Усть-Каменогорск":"Өскемен"},
+ en:{"Актау":"Aktau","Актобе":"Aktobe","Алматы":"Almaty","Астана":"Astana","Атырау":"Atyrau","Жезказган":"Zhezkazgan","Караганда":"Karaganda","Кокшетау":"Kokshetau","Костанай":"Kostanay","Кызылорда":"Kyzylorda","Павлодар":"Pavlodar","Петропавловск":"Petropavlovsk","Семей":"Semey","Талдыкорган":"Taldykorgan","Тараз":"Taraz","Уральск":"Oral","Усть-Каменогорск":"Ust-Kamenogorsk","Шымкент":"Shymkent"}},
+cat:{kk:{"Красота и уход":"Сұлулық және күтім","Мода и стиль":"Сән және стиль","Еда и напитки":"Тағам және сусындар","Техника и гаджеты":"Техника және гаджеттер","Путешествия":"Саяхат","Спорт и фитнес":"Спорт және фитнес","Дом и уют":"Үй және жайлылық","Другое":"Басқа"},
+ en:{"Красота и уход":"Beauty & care","Мода и стиль":"Fashion & style","Еда и напитки":"Food & drinks","Техника и гаджеты":"Tech & gadgets","Путешествия":"Travel","Спорт и фитнес":"Sports & fitness","Дом и уют":"Home & comfort","Другое":"Other"}},
+type:{kk:{"Видео":"Бейне","Фото":"Фото"},en:{"Видео":"Video","Фото":"Photo"}}
+};
+const _nm=(g,v)=>(NM[g][L]&&NM[g][L][v])||v;
+const cityL=v=>_nm("city",v),catL=v=>_nm("cat",v),typeL=v=>_nm("type",v);
+let L=(()=>{try{const s=localStorage.getItem("ugc_l");if(s&&LANGS[s])return s}catch{}
+  const n=(navigator.language||"ru").slice(0,2);return n=="kk"?"kk":n=="en"?"en":"ru"})();
+const t=(k,v)=>{let s=(D[L]&&D[L][k])??D.ru[k]??k;if(v)for(const a in v)s=s.replace("{"+a+"}",v[a]);return s};
+function setLang(l){if(!LANGS[l])return;L=l;try{localStorage.setItem("ugc_l",l)}catch{}}
+/* index.html ішіндегі тұрақты мәтіндер: data-i18n және data-i18n-aria */
+function applyStatic(){
+  document.documentElement.lang=L;
+  document.querySelectorAll("[data-i18n]").forEach(e=>e.textContent=t(e.dataset.i18n));
+  document.querySelectorAll("[data-i18n-aria]").forEach(e=>e.setAttribute("aria-label",t(e.dataset.i18nAria)));
+  const s=document.getElementById("lang");if(s)s.value=L;
+}
+
+</script>
+<script>
+/* Данные, города, категории и общие функции */
+const CITIES=["Актау", "Актобе", "Алматы", "Астана", "Атырау", "Жезказган", "Караганда", "Кокшетау", "Костанай", "Кызылорда", "Павлодар", "Петропавловск", "Семей", "Талдыкорган", "Тараз", "Уральск", "Усть-Каменогорск", "Шымкент"];
+const CATS=["Красота и уход","Мода и стиль","Еда и напитки","Техника и гаджеты","Путешествия","Спорт и фитнес","Дом и уют","Другое"];
+const CR=[];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const idb=()=>new Promise((res,rej)=>{try{const r=indexedDB.open("ugc",1);r.onupgradeneeded=()=>r.result.createObjectStore("v");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});
+const vop=async(m,f)=>{const d=await idb();return new Promise((res,rej)=>{const t=d.transaction("v",m),r=f(t.objectStore("v"));t.oncomplete=()=>res(r.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)})};
+const vput=(k,b)=>vop("readwrite",o=>o.put(b,k)),vget=k=>vop("readonly",o=>o.get(k)),vdel=k=>vop("readwrite",o=>o.delete(k));
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+CR.push(...ld("ugc_cr",[]));
+let favs=ld("ugc_f",[]),user=ld("ugc_u",null),F={q:"",city:"",cat:"",price:"",type:"",sort:"r",fav:false};
+const money=n=>n.toLocaleString(LOCALE[L])+" ₸";
+const bg=x=>`linear-gradient(${x.h}deg,hsl(${x.h},75%,38%),hsl(${x.h+30},80%,62%))`;
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2400)}
+function modal(h){$("#mb").innerHTML=h;$("#modal").classList.add("on")}
+function close(){$("#modal").classList.remove("on")}
+function go(p){location.hash="#"+p}
+function head(){
+  $("#fc").textContent=favs.length;
+  $("#auth").innerHTML=user?`<span style="margin-right:10px;font-size:14px">${user.name}</span><button class="btn o sm" data-act="out">${t("logout")}</button>`
+   :`<button class="btn o sm" data-go="/auth?m=in">${t("login")}</button> <button class="btn sm" data-go="/auth?m=reg">${t("register")}</button>`;
+}
+function card(x){return `<article class="card" data-go="/creator/${x.id}"><div class="ph" style="background:${bg(x)}">${x.n[0]}
+<button class="heart ${favs.includes(x.id)?"on":""}" data-fav="${x.id}" aria-label="${t("fav_aria")}">${favs.includes(x.id)?"♥":"♡"}</button></div>
+<div class="cb"><div class="top">${x.n}<small>${x.v}</small></div><div class="meta">${x.c?`★ ${x.r} (${x.c}) · `:t("new")+" · "}${cityL(x.city)}</div>
+<div class="chips">${x.t.map(c=>`<span>${catL(c)}</span>`).join("")}</div><div class="pr">${t("from",{p:money(x.p)})}<small>${t("per_video")}</small></div></div></article>`}
+const opt=(arr,v,fn)=>arr.map(a=>`<option value="${a}" ${a===v?"selected":""}>${fn?fn(a):a}</option>`).join("");
+
+</script>
+<script>
+/* Главная страница */
+const ICO=(d)=>`<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0D5BD7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+function home(){
+  const fs=[ICO('<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 3-5.5 6-5.5s6 2 6 5.5M16 5a3 3 0 0 1 0 6M18 14.5c2 .6 3 2.2 3 4.5"/>'),ICO('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'),ICO('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'),ICO('<path d="M4 20V13M10 20V8M16 20V11M22 20V4"/>')];
+  $("#app").innerHTML=`<div class="hero"><div class="w"><div>
+  <h1>${t("hero_a")} <em>${t("hero_b")}</em></h1>
+  <p class="lead">${t("lead")}</p>
+  <div class="sbox"><div class="r"><input id="hq" placeholder="${t("search_ph")}" aria-label="${t("search_aria")}"><button class="btn" id="hgo">${t("start")}</button></div>
+  <div class="sel"><select id="hc"><option value="">${t("city")}</option>${opt(CITIES,"",cityL)}</select>
+  <select id="hk"><option value="">${t("category")}</option>${opt(CATS,"",catL)}</select>
+  <select id="hp"><option value="">${t("price")}</option>${[12000,15000,20000].map(p=>`<option value="${p}">${t("upto",{p:money(p)})}</option>`).join("")}</select>
+  <select id="ht"><option value="">${t("ctype")}</option>${opt(["Видео","Фото"],"",typeL)}</select></div></div></div>
+  <div class="vis" aria-hidden="true"><div class="ph0"><i>▶</i></div></div></div></div>
+  <div class="w sec" style="padding-bottom:0"><div class="fs">${fs.map((s,i)=>`<div>${s}${t("f"+(i+1))}</div>`).join("")}</div></div>
+  <div class="w sec"><div class="row"><h2>${t("pop_cats")}</h2><button class="link" data-act="allcat">${t("all_cats")}</button></div>
+  <div class="cats">${CATS.map(c=>`<button class="cat" data-cat="${c}">${catL(c)}</button>`).join("")}</div></div>
+  <div class="w sec" style="padding-top:0"><div class="row"><h2>${t("cities")}</h2></div><div class="cats">${CITIES.map(c=>`<button class="cat" data-city="${c}">${cityL(c)}</button>`).join("")}</div></div>
+  <div class="w sec" style="padding-top:0"><div class="row"><h2>${t("pop_cr")}</h2><button class="link" data-go="/catalog">${t("see_all")}</button></div>
+  <div class="grid">${CR.length?CR.slice(0,4).map(card).join(""):`<div class="empty">${t("no_cr_first")}<br><button class="btn o sm" style="margin-top:12px" data-go="/auth?m=reg&role=creator">${t("create_profile")}</button></div>`}</div></div>
+  <div class="w sec" style="padding-top:0"><div class="row"><h2>${t("why")}</h2></div><div class="why">
+  ${[1,2,3,4].map(i=>`<div><b>${t("w"+i+"t")}</b><p>${t("w"+i+"d")}</p></div>`).join("")}</div></div>
+  <div class="w sec" style="padding-top:0"><div class="cta"><h2>${t("cta_cr")}</h2><button class="btn" data-go="/auth?m=reg&role=creator">${t("create_profile")}</button></div></div>`;
+  $("#hgo").onclick=()=>{F={...F,q:$("#hq").value,city:$("#hc").value,cat:$("#hk").value,price:$("#hp").value,type:$("#ht").value,fav:false};go("/catalog")};
+}
+
+</script>
+<script>
+/* Каталог креаторов (фильтры) */
+function catalog(){
+  $("#app").innerHTML=`<div class="w"><div class="cat-l"><aside class="side"><h2 style="font-size:17px">${t("filters")}</h2>
+  <label>${t("search")}<input type="text" id="fq" value="${F.q}" placeholder="${t("name_topic")}"></label>
+  <label>${t("city")}<select id="fc1"><option value="">${t("all")}</option>${opt(CITIES,F.city,cityL)}</select></label>
+  <label>${t("category")}<select id="fk"><option value="">${t("all")}</option>${opt(CATS,F.cat,catL)}</select></label>
+  <label>${t("price")}<select id="fp"><option value="">${t("any")}</option>${[12000,15000,20000].map(p=>`<option value="${p}" ${F.price==p?"selected":""}>${t("upto",{p:money(p)})}</option>`).join("")}</select></label>
+  <label>${t("ctype")}<select id="ft"><option value="">${t("all")}</option>${opt(["Видео","Фото"],F.type,typeL)}</select></label>
+  <label>${t("sort")}<select id="fs"><option value="r">${t("by_rating")}</option><option value="p" ${F.sort=="p"?"selected":""}>${t("cheaper")}</option></select></label>
+  <label class="ck"><input type="checkbox" id="ff" ${F.fav?"checked":""}> ${t("only_fav")}</label>
+  <button class="btn g sm" id="fr">${t("reset")}</button></aside>
+  <div><div class="row"><h2>${t("creators_h")}</h2><span id="cnt" style="color:var(--mut);font-size:14px"></span></div><div class="grid" id="lst"></div></div></div></div>`;
+  const rd=()=>{
+    F={q:$("#fq").value,city:$("#fc1").value,cat:$("#fk").value,price:$("#fp").value,type:$("#ft").value,sort:$("#fs").value,fav:$("#ff").checked};
+    const l=CR.filter(x=>(!F.q||(x.n+" "+x.city+" "+cityL(x.city)+" "+x.t.join(" ")+" "+x.t.map(catL).join(" ")).toLowerCase().includes(F.q.toLowerCase()))&&(!F.city||x.city===F.city)&&(!F.cat||x.t.includes(F.cat))&&(!F.price||x.p<=+F.price)&&(!F.type||x.type===F.type)&&(!F.fav||favs.includes(x.id))).sort((a,b)=>F.sort=="p"?a.p-b.p:b.r-a.r);
+    $("#cnt").textContent=t("found",{n:l.length});
+    $("#lst").innerHTML=l.length?l.map(card).join(""):`<div class="empty">${CR.length?t("nobody"):t("none_yet")}<br>${CR.length?`<button class="btn o sm" style="margin-top:12px" id="fr2">${t("reset_f")}</button>`:""}</div>`;
+    const r2=$("#fr2");if(r2)r2.onclick=rs;
+  };
+  const rs=()=>{F={q:"",city:"",cat:"",price:"",type:"",sort:"r",fav:false};catalog()};
+  document.querySelectorAll(".side select,.side input").forEach(e=>e.oninput=rd);
+  $("#fr").onclick=rs;rd();
+}
+
+</script>
+<script>
+/* Профиль креатора, видео, окно «Связаться» */
+function creator(id){
+  const x=CR.find(c=>c.id==id);if(!x)return go("/catalog");const own=x.own&&user&&user.email===x.email;
+  const delBtn=v=>own?`<button class="link" data-act="delvid" data-id="${x.id}" data-v="${v.id}" aria-label="${t("del_video")}">✕</button>`:"";
+  $("#app").innerHTML=`<div class="w"><div class="pf"><div>
+  <button class="link" data-go="/catalog" style="margin-bottom:14px">${t("back")}</button>
+  <div class="box"><div class="hd"><div class="av" style="background:${bg(x)}">${x.n[0]}</div><div><h1>${x.n}</h1>
+  <div style="color:var(--mut)">${x.c?t("reviews_n",{r:x.r,c:x.c})+" · ":t("new_cr")+" · "}${cityL(x.city)}</div></div></div>
+  <p style="margin:16px 0 10px">${x.bio||t("def_bio")}</p><div class="chips">${x.t.map(c=>`<span>${catL(c)}</span>`).join("")}</div></div>
+  <div class="box"><div class="row"><h2>${t("portfolio")}</h2>${own?`<button class="btn sm" data-act="addvid" data-id="${x.id}">${t("add_video")}</button>`:""}</div>${(x.vids||[]).length?`<div class="port">${x.vids.map(v=>v.u?`<a class="vt" href="${esc(v.u)}" target="_blank" rel="noopener noreferrer"><b style="margin:auto;font-size:30px">▶</b><span>${esc(v.t)}${delBtn(v)}</span></a>`:`<div class="vt"><video controls playsinline preload="metadata" data-vid="${v.id}"></video><span>${esc(v.t)}${delBtn(v)}</span></div>`).join("")}</div>`:`<p style="color:var(--mut)">${t("no_videos")}</p>`}</div>
+  <div class="box"><h2 style="margin-bottom:8px">${t("reviews")}</h2>
+  <p style="color:var(--mut)">${t("no_reviews")}</p></div></div>
+  <aside class="box" style="position:sticky;top:84px"><h2 style="margin-bottom:10px">${t("cost")}</h2>
+  <div class="pk"><span>${t("video_ugc")}</span><b>${money(x.p)}</b></div><div class="pk"><span>${t("photo_set")}</span><b>${money(x.ph)}</b></div>
+  <div style="display:grid;gap:10px;margin-top:18px"><button class="btn" data-contact="${x.id}">${t("contact")}</button>
+  ${own?`<button class="btn g" data-act="delcr" data-id="${x.id}">${t("del_profile")}</button>`:""}<button class="btn o" data-fav="${x.id}">${favs.includes(x.id)?t("in_fav"):t("add_fav")}</button></div></aside></div></div>`;
+  document.querySelectorAll("video[data-vid]").forEach(async el=>{try{const b=await vget(+el.dataset.vid);if(b)el.src=URL.createObjectURL(b);else el.replaceWith(t("video_unavail"))}catch{el.replaceWith(t("video_unavail"))}});
+}
+function addVid(id){
+  const x=CR.find(c=>c.id==id);if(!x)return;
+  modal(`<h2>${t("add_video")}</h2><label style="font-size:13px;color:var(--mut)">${t("title_l")}<input class="i" id="vt" maxlength="60" placeholder="${t("title_ph")}"></label>
+  <label style="font-size:13px;color:var(--mut)">${t("file_l")}<input class="i" id="vf" type="file" accept="video/*"></label>
+  <label style="font-size:13px;color:var(--mut)">${t("or_link")}<input class="i" id="vu" type="url" placeholder="https://..."></label>
+  <div class="err" id="ve"></div><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn g" data-act="close">${t("cancel")}</button><button class="btn" id="vs">${t("add")}</button></div>`);
+  $("#vs").onclick=async()=>{
+    const f=$("#vf").files[0],u=$("#vu").value.trim(),tt=$("#vt").value.trim()||t("def_vtitle"),e=$("#ve");
+    if(!f&&!u)return e.textContent=t("e_pick");
+    if(!f&&!/^https?:\/\/\S+$/.test(u))return e.textContent=t("e_link");
+    if(f&&f.size>100*1048576)return e.textContent=t("e_big");
+    const v={id:Date.now(),t:tt};
+    try{if(f){await vput(v.id,f);v.f=1}else v.u=u}catch{return e.textContent=t("e_save")}
+    x.vids=[...(x.vids||[]),v];sv("ugc_cr",CR.filter(c=>c.own));close();creator(x.id);toast(t("video_added"));
+  };
+}
+function contact(id){
+  if(!user){toast(t("login_first"));return go("/auth?m=in")}
+  const x=CR.find(c=>c.id==id);
+  modal(`<h2>${t("write_to",{n:x.n})}</h2><label style="font-size:13px;color:var(--mut)">${t("describe")}<textarea class="i" id="msg" rows="4" placeholder="${t("desc_ph")}"></textarea></label>
+  <div class="err" id="me"></div><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn g" data-act="close">${t("cancel")}</button><button class="btn" id="send">${t("send")}</button></div>`);
+  $("#send").onclick=()=>{if($("#msg").value.trim().length<5)return $("#me").textContent=t("e_desc");close();toast(t("sent",{n:x.n}))};
+}
+
+</script>
+<script>
+/* Вход и регистрация */
+function auth(p){
+  let m=p.get("m")||"in",role=p.get("role")||"biz";
+  const draw=()=>{
+    $("#app").innerHTML=`<div class="w"><div class="fm box"><div class="tabs"><button data-m="in" class="${m=="in"?"on":""}">${t("tab_in")}</button><button data-m="reg" class="${m=="reg"?"on":""}">${t("tab_reg")}</button></div>
+    <form id="af" novalidate>${m=="reg"?`<div class="tabs"><button type="button" data-r="biz" class="${role=="biz"?"on":""}">${t("i_biz")}</button><button type="button" data-r="creator" class="${role=="creator"?"on":""}">${t("i_cr")}</button></div>
+    <label>${t("name")}<input class="i" id="an" placeholder="${role=="biz"?t("brand_name"):t("your_name")}"></label>${role=="creator"?`<label>${t("city")}<select class="i" id="ac">${opt(CITIES,"",cityL)}</select></label><label>${t("category")}<select class="i" id="ak">${opt(CATS,"",catL)}</select></label><label>${t("ctype")}<select class="i" id="at">${opt(["Видео","Фото"],"",typeL)}</select></label><label>${t("price_video")}<input class="i" id="apr" type="number" min="1000" placeholder="10000"></label>`:""}`:""}
+    <label>${t("email")}<input class="i" id="ae" type="email" placeholder="you@mail.kz"></label>
+    <label>${t("password")}<input class="i" id="ap" type="password" placeholder="${t("pass_ph")}"></label>
+    <div class="err" id="ar"></div><button class="btn" type="submit">${m=="in"?t("login"):t("create_acc")}</button></form></div></div>`;
+    document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{m=b.dataset.m;draw()});
+    document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{role=b.dataset.r;draw()});
+    $("#af").onsubmit=e=>{e.preventDefault();const em=$("#ae").value.trim(),pw=$("#ap").value,nm=m=="reg"?$("#an").value.trim():"";
+      const er=(!/^\S+@\S+\.\S+$/.test(em))?t("e_email"):pw.length<6?t("e_pass"):(m=="reg"&&!nm)?t("e_name"):(m=="reg"&&role=="creator"&&!(+$("#apr").value>=1000))?t("e_price"):"";
+      if(er)return $("#ar").textContent=er;
+      user={name:nm||em.split("@")[0],email:em,role};sv("ugc_u",user);head();toast(m=="in"?t("logged_in"):t("acc_created"));
+      if(m=="reg"&&role=="creator"){const pr=+$("#apr").value,id=Date.now();CR.push({id,n:nm,r:0,c:0,city:$("#ac").value,v:"—",t:[$("#ak").value],p:pr,ph:Math.round(pr/2),type:$("#at").value,h:Math.floor(Math.random()*330),bio:"",own:1,email:em});sv("ugc_cr",CR.filter(x=>x.own));return go("/creator/"+id)}
+      go("/");};
+  };draw();
+}
+
+</script>
+<script>
+/* Страница «Бренды» */
+function brands(){
+  const S=[1,2,3,4].map(i=>[t("s"+i+"t"),t("s"+i+"d")]);
+  $("#app").innerHTML=`<div class="ph2"><div class="w"><h1>${t("brands_t")}</h1><p>${t("brands_lead")}</p></div></div>
+  <div class="w sec"><div class="row"><h2>${t("get_h")}</h2></div><div class="why">
+  ${[1,2,3,4].map(i=>`<div><b>${t("g"+i+"t")}</b><p>${t("g"+i+"d")}</p></div>`).join("")}</div></div>
+  <div class="w sec" style="padding-top:0"><div class="row"><h2>${t("how_h")}</h2></div><div class="ins">${S.map(([a,b],i)=>`<div><b>${i+1}</b>${a}<p style="color:var(--mut);font-size:13px;margin-top:4px">${b}</p></div>`).join("")}</div></div>
+  <div class="w sec" style="padding-top:0"><div class="cta"><h2>${t("cta_b")}</h2><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-go="/catalog">${t("open_cat")}</button><button class="btn" data-go="/auth?m=reg&role=biz">${t("reg_brand")}</button></div></div></div>`;
+}
+
+</script>
+<script>
+/* Страница «О нас» */
+function about(){
+  $("#app").innerHTML=`<div class="ph2"><div class="w"><h1>${t("about_t")}</h1><p>${t("about_lead")}</p></div></div>
+  <div class="w sec"><div class="ins"><div><b>18</b>${t("st1")}</div><div><b>0 ₸</b>${t("st2")}</div><div><b>Real people</b>Real content. Real results.</div></div></div>
+  <div class="w sec" style="padding-top:0"><div class="box"><h2 style="margin-bottom:8px">${t("idea_h")}</h2><p style="color:var(--mut)">${t("idea")}</p></div>
+  <div class="box"><h2 style="margin-bottom:12px">${t("cities")}</h2><div class="chips" style="gap:8px">${CITIES.map(c=>`<button class="cat" style="padding:7px 14px" data-city="${c}">${cityL(c)}</button>`).join("")}</div></div>
+  <div class="box"><h2 style="margin-bottom:8px">${t("contacts")}</h2><div class="pk"><span>${t("site")}</span><b>www.ugc.kz</b></div><div class="pk"><span>${t("mail")}</span><a class="link" href="mailto:hello@ugc.kz">hello@ugc.kz</a></div><div class="pk"><span>Instagram</span><b>@ugc.kz</b></div></div></div>`;
+}
+
+</script>
+<script>
+/* Роутер и обработчики кликов (подключается последним) */
+function route(){
+  const [path,qs]=(location.hash.slice(1)||"/").split("?"),p=new URLSearchParams(qs||""),s=path.split("/").filter(Boolean);
+  applyStatic();head();scrollTo(0,0);
+  document.querySelectorAll("nav a").forEach(a=>{const g=a.dataset.go.split("?")[0];a.classList.toggle("on",g=="/"+(s[0]=="creator"?"catalog":s[0]||""))});
+  if(!s.length)home();else if(s[0]=="catalog")catalog();else if(s[0]=="creator")creator(s[1]);else if(s[0]=="auth")auth(p);else if(s[0]=="brands")brands();else if(s[0]=="about")about();else go("/");
+}
+function toggleFav(id){favs=favs.includes(id)?favs.filter(f=>f!==id):[...favs,id];sv("ugc_f",favs);head()}
+document.addEventListener("click",e=>{
+  const t=e.target,f=t.closest("[data-fav]");
+  if(f){e.stopPropagation();toggleFav(+f.dataset.fav);const y=scrollY;route();scrollTo(0,y);return}
+  const c=t.closest("[data-contact]");if(c)return contact(c.dataset.contact);
+  const k=t.closest("[data-cat]");if(k){F={...F,cat:k.dataset.cat,q:"",city:"",price:"",type:"",fav:false};return go("/catalog")}
+  const ci=t.closest("[data-city]");if(ci){F={q:"",city:ci.dataset.city,cat:"",price:"",type:"",sort:"r",fav:false};return go("/catalog")}
+  const a=t.closest("[data-act]");
+  if(a){e.preventDefault();const v=a.dataset.act;
+    if(v=="addvid")addVid(a.dataset.id);
+    if(v=="delvid"){const x=CR.find(c=>c.id==a.dataset.id);if(x){const vi=(x.vids||[]).find(q=>q.id==a.dataset.v);x.vids=(x.vids||[]).filter(q=>q.id!=a.dataset.v);if(vi&&vi.f)vdel(vi.id).catch(()=>{});sv("ugc_cr",CR.filter(c=>c.own));creator(x.id);toast(t("video_deleted"))}}
+    if(v=="out"){user=null;sv("ugc_u",null);toast(t("logged_out"));go("/");head()}
+    if(v=="close")close();
+    if(v=="delcr"){const i=CR.findIndex(c=>c.id==a.dataset.id);if(i>-1){(CR[i].vids||[]).forEach(q=>q.f&&vdel(q.id).catch(()=>{}));CR.splice(i,1)}sv("ugc_cr",CR.filter(c=>c.own));toast(t("profile_deleted"));go("/catalog")}
+    if(v=="allcat"){F={...F,cat:""};go("/catalog")}
+    return}
+  const g=t.closest("[data-go]");if(g)go(g.dataset.go);
+  if(t.id=="modal")close();
+});
+$("#favb").onclick=()=>{F={q:"",city:"",cat:"",price:"",type:"",sort:"r",fav:true};location.hash=="#/catalog"?catalog():go("/catalog")};
+$("#lang").onchange=e=>{setLang(e.target.value);close();route()};
+addEventListener("hashchange",route);route();
+
+</script>
+</body>
+</html>
