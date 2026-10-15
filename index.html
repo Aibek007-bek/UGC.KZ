@@ -77,6 +77,10 @@ input.i,textarea.i{border:1px solid var(--line);border-radius:10px;padding:11px 
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;transition:.3s;z-index:60;opacity:0}
 #toast.on{transform:translateX(-50%);opacity:1}
 footer{border-top:1px solid var(--line);background:#fff;padding:22px 0;color:var(--mut);font-size:13px}
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-26px;position:relative}
+.stats4 div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 6px 18px rgba(31,92,240,.06)}
+.stats4 b{display:block;font:700 26px/1.1 Poppins,Inter,sans-serif;color:var(--b);letter-spacing:-.5px}.stats4 span{color:var(--mut);font-size:13px}
+@media(max-width:640px){.stats4{grid-template-columns:1fr 1fr}}
 .ph2{background:linear-gradient(180deg,#fff,var(--bs));border-bottom:1px solid var(--line);padding:44px 0 34px}
 .ph2 p{color:var(--mut);max-width:620px;margin-top:10px}
 .tw{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
@@ -133,8 +137,8 @@ a{color:inherit;text-decoration:none}
 
 <script>
 /* Supabase баптауы — Project Settings → API бөлімінен алыңыз */
-const SUPABASE_URL="https://XXXXXXXX.supabase.co";
-const SUPABASE_KEY="PASTE_YOUR_ANON_PUBLIC_KEY_HERE";
+const SUPABASE_URL="https://uhxybewgjkpqdjihyenn.supabase.co";
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoeHliZXdnamtwcWRqaWh5ZW5uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMjI4NjksImV4cCI6MjEwNzU5ODg2OX0.QWtdioVQH4B3oHSWGXP6ZjJfuw8eu5cJndqjXMh7NN4";
 
 </script>
 <script>
@@ -163,7 +167,7 @@ photo_set:"Фото-набор",contact:"Связаться",del_profile:"Уда
 def_bio:"Креатор UGC.KZ. Расскажите о себе брендам.",
 title_l:"Название",title_ph:"Например: Обзор кофе",file_l:"Файл видео (до 100 МБ)",or_link:"или ссылка на видео",cancel:"Отмена",add:"Добавить",
 e_pick:"Выберите файл или вставьте ссылку.",e_link:"Ссылка должна начинаться с http:// или https://",e_big:"Файл больше 50 МБ. Сожмите видео или вставьте ссылку.",uploading:"Загрузка…",
-m_inbox:"Сообщения",m_inbox_h:"Сообщения",m_in:"Входящие",m_out:"Отправленные",m_none_in:"Пока нет входящих сообщений.",m_none_out:"Вы ещё никому не писали.",m_reply:"Ответить по email",m_err:"Не удалось загрузить сообщения.",m_edit:"Редактировать профиль",m_photo_price:"Цена за фотосет, ₸",m_bio:"О себе",m_save:"Сохранить",m_saved:"Профиль сохранён",m_rate:"Оценка",m_rev_ph:"Расскажите о сотрудничестве",m_rev_send:"Оставить отзыв",m_rev_sent:"Спасибо за отзыв",m_rev_login:"Войдите как бренд, чтобы оставить отзыв.",m_rev_once:"Вы уже оставили отзыв этому креатору.",e_exists:"Этот email уже зарегистрирован. Войдите.",e_login:"Неверный email или пароль.",e_confirm:"Аккаунт создан. Подтвердите email по ссылке из письма и войдите.",e_confirm2:"Сначала подтвердите email по ссылке из письма.",e_cfg:"Сервер не подключён: заполните SUPABASE_URL и SUPABASE_KEY в index.html.",e_load:"Не удалось загрузить данные с сервера. Обновите страницу.",brands_on:"Бренды на платформе",no_brands:"Пока нет брендов. Зарегистрируйтесь первым.",e_net:"Нет связи с сервером. Проверьте интернет и попробуйте ещё раз.",e_save:"Не удалось сохранить файл. Попробуйте ссылку или файл меньше.",def_vtitle:"Видео",video_added:"Видео добавлено",video_deleted:"Видео удалено",
+st_cr:"креаторов",st_br:"брендов",st_rv:"отзывов",st_ct:"городов",m_inbox:"Сообщения",m_inbox_h:"Сообщения",m_in:"Входящие",m_out:"Отправленные",m_none_in:"Пока нет входящих сообщений.",m_none_out:"Вы ещё никому не писали.",m_reply:"Ответить по email",m_err:"Не удалось загрузить сообщения.",m_edit:"Редактировать профиль",m_photo_price:"Цена за фотосет, ₸",m_bio:"О себе",m_save:"Сохранить",m_saved:"Профиль сохранён",m_rate:"Оценка",m_rev_ph:"Расскажите о сотрудничестве",m_rev_send:"Оставить отзыв",m_rev_sent:"Спасибо за отзыв",m_rev_login:"Войдите как бренд, чтобы оставить отзыв.",m_rev_once:"Вы уже оставили отзыв этому креатору.",e_exists:"Этот email уже зарегистрирован. Войдите.",e_login:"Неверный email или пароль.",e_confirm:"Аккаунт создан. Подтвердите email по ссылке из письма и войдите.",e_confirm2:"Сначала подтвердите email по ссылке из письма.",e_cfg:"Сервер не подключён: заполните SUPABASE_URL и SUPABASE_KEY в index.html.",e_load:"Не удалось загрузить данные с сервера. Обновите страницу.",brands_on:"Бренды на платформе",no_brands:"Пока нет брендов. Зарегистрируйтесь первым.",e_net:"Нет связи с сервером. Проверьте интернет и попробуйте ещё раз.",e_save:"Не удалось сохранить файл. Попробуйте ссылку или файл меньше.",def_vtitle:"Видео",video_added:"Видео добавлено",video_deleted:"Видео удалено",
 login_first:"Сначала войдите в аккаунт",write_to:"Написать {n}",describe:"Опишите задачу",desc_ph:"Например: нужен обзор кофе, 2 видео",send:"Отправить",
 e_desc:"Опишите задачу хотя бы парой слов.",sent:"Сообщение отправлено {n}",profile_deleted:"Профиль удалён",logged_out:"Вы вышли",
 tab_in:"Вход",tab_reg:"Регистрация",i_biz:"Я бизнес",i_cr:"Я креатор",name:"Имя",brand_name:"Название бренда",your_name:"Ваше имя",
@@ -202,7 +206,7 @@ photo_set:"Фото жинағы",contact:"Байланысу",del_profile:"Пр
 def_bio:"UGC.KZ креаторы. Өзіңіз туралы брендтерге айтыңыз.",
 title_l:"Атауы",title_ph:"Мысалы: Кофе шолуы",file_l:"Бейне файлы (100 МБ дейін)",or_link:"немесе бейне сілтемесі",cancel:"Бас тарту",add:"Қосу",
 e_pick:"Файлды таңдаңыз немесе сілтемені қойыңыз.",e_link:"Сілтеме http:// немесе https:// деп басталуы керек.",e_big:"Файл 50 МБ-тан үлкен. Бейнені кішірейтіңіз немесе сілтеме қойыңыз.",uploading:"Жүктелуде…",
-m_inbox:"Хабарламалар",m_inbox_h:"Хабарламалар",m_in:"Кіріс",m_out:"Жіберілген",m_none_in:"Әзірге кіріс хабарлама жоқ.",m_none_out:"Сіз әлі ешкімге жазған жоқсыз.",m_reply:"Email арқылы жауап беру",m_err:"Хабарламалар жүктелмеді.",m_edit:"Профильді өңдеу",m_photo_price:"Фотосет бағасы, ₸",m_bio:"Өзі туралы",m_save:"Сақтау",m_saved:"Профиль сақталды",m_rate:"Баға",m_rev_ph:"Ынтымақтастық туралы жазыңыз",m_rev_send:"Пікір қалдыру",m_rev_sent:"Пікіріңіз үшін рахмет",m_rev_login:"Пікір қалдыру үшін бренд ретінде кіріңіз.",m_rev_once:"Сіз бұл креаторға пікір қалдырғансыз.",e_exists:"Бұл email бұрын тіркелген. Кіріңіз.",e_login:"Email немесе құпиясөз қате.",e_confirm:"Аккаунт жасалды. Поштаңыздағы сілтеме арқылы email-ді растап, кіріңіз.",e_confirm2:"Алдымен поштаңыздағы сілтеме арқылы email-ді растаңыз.",e_cfg:"Сервер қосылмаған: index.html ішінде SUPABASE_URL және SUPABASE_KEY толтырыңыз.",e_load:"Серверден дерек жүктелмеді. Бетті жаңартыңыз.",brands_on:"Платформадағы брендтер",no_brands:"Әзірге брендтер жоқ. Бірінші болып тіркеліңіз.",e_net:"Серверге қосылу мүмкін болмады. Интернетті тексеріп, қайта көріңіз.",e_save:"Файлды сақтау мүмкін болмады. Сілтемені немесе кішірек файлды қолданып көріңіз.",def_vtitle:"Бейне",video_added:"Бейне қосылды",video_deleted:"Бейне жойылды",
+st_cr:"креатор",st_br:"бренд",st_rv:"пікір",st_ct:"қала",m_inbox:"Хабарламалар",m_inbox_h:"Хабарламалар",m_in:"Кіріс",m_out:"Жіберілген",m_none_in:"Әзірге кіріс хабарлама жоқ.",m_none_out:"Сіз әлі ешкімге жазған жоқсыз.",m_reply:"Email арқылы жауап беру",m_err:"Хабарламалар жүктелмеді.",m_edit:"Профильді өңдеу",m_photo_price:"Фотосет бағасы, ₸",m_bio:"Өзі туралы",m_save:"Сақтау",m_saved:"Профиль сақталды",m_rate:"Баға",m_rev_ph:"Ынтымақтастық туралы жазыңыз",m_rev_send:"Пікір қалдыру",m_rev_sent:"Пікіріңіз үшін рахмет",m_rev_login:"Пікір қалдыру үшін бренд ретінде кіріңіз.",m_rev_once:"Сіз бұл креаторға пікір қалдырғансыз.",e_exists:"Бұл email бұрын тіркелген. Кіріңіз.",e_login:"Email немесе құпиясөз қате.",e_confirm:"Аккаунт жасалды. Поштаңыздағы сілтеме арқылы email-ді растап, кіріңіз.",e_confirm2:"Алдымен поштаңыздағы сілтеме арқылы email-ді растаңыз.",e_cfg:"Сервер қосылмаған: index.html ішінде SUPABASE_URL және SUPABASE_KEY толтырыңыз.",e_load:"Серверден дерек жүктелмеді. Бетті жаңартыңыз.",brands_on:"Платформадағы брендтер",no_brands:"Әзірге брендтер жоқ. Бірінші болып тіркеліңіз.",e_net:"Серверге қосылу мүмкін болмады. Интернетті тексеріп, қайта көріңіз.",e_save:"Файлды сақтау мүмкін болмады. Сілтемені немесе кішірек файлды қолданып көріңіз.",def_vtitle:"Бейне",video_added:"Бейне қосылды",video_deleted:"Бейне жойылды",
 login_first:"Алдымен аккаунтқа кіріңіз",write_to:"{n} деген креаторға жазу",describe:"Тапсырманы сипаттаңыз",desc_ph:"Мысалы: кофе шолуы керек, 2 бейне",send:"Жіберу",
 e_desc:"Тапсырманы кемінде бірнеше сөзбен сипаттаңыз.",sent:"Хабарлама жіберілді: {n}",profile_deleted:"Профиль жойылды",logged_out:"Сіз шықтыңыз",
 tab_in:"Кіру",tab_reg:"Тіркелу",i_biz:"Мен бизнеспін",i_cr:"Мен креатормын",name:"Аты",brand_name:"Бренд атауы",your_name:"Сіздің атыңыз",
@@ -241,7 +245,7 @@ photo_set:"Photo set",contact:"Contact",del_profile:"Delete profile",in_fav:"♥
 def_bio:"UGC.KZ creator. Tell brands about yourself.",
 title_l:"Title",title_ph:"E.g. Coffee review",file_l:"Video file (up to 100 MB)",or_link:"or a video link",cancel:"Cancel",add:"Add",
 e_pick:"Choose a file or paste a link.",e_link:"The link must start with http:// or https://",e_big:"The file is larger than 50 MB. Compress the video or paste a link.",uploading:"Uploading…",
-m_inbox:"Messages",m_inbox_h:"Messages",m_in:"Inbox",m_out:"Sent",m_none_in:"No incoming messages yet.",m_none_out:"You have not written to anyone yet.",m_reply:"Reply by email",m_err:"Could not load messages.",m_edit:"Edit profile",m_photo_price:"Photo set price, ₸",m_bio:"About",m_save:"Save",m_saved:"Profile saved",m_rate:"Rating",m_rev_ph:"Tell us about the collaboration",m_rev_send:"Leave a review",m_rev_sent:"Thanks for your review",m_rev_login:"Log in as a brand to leave a review.",m_rev_once:"You have already reviewed this creator.",e_exists:"This email is already registered. Please log in.",e_login:"Wrong email or password.",e_confirm:"Account created. Confirm your email via the link we sent, then log in.",e_confirm2:"Please confirm your email via the link we sent first.",e_cfg:"Server not connected: fill in SUPABASE_URL and SUPABASE_KEY in index.html.",e_load:"Could not load data from the server. Refresh the page.",brands_on:"Brands on the platform",no_brands:"No brands yet. Be the first to register.",e_net:"No connection to the server. Check your internet and try again.",e_save:"Could not save the file. Try a link or a smaller file.",def_vtitle:"Video",video_added:"Video added",video_deleted:"Video deleted",
+st_cr:"creators",st_br:"brands",st_rv:"reviews",st_ct:"cities",m_inbox:"Messages",m_inbox_h:"Messages",m_in:"Inbox",m_out:"Sent",m_none_in:"No incoming messages yet.",m_none_out:"You have not written to anyone yet.",m_reply:"Reply by email",m_err:"Could not load messages.",m_edit:"Edit profile",m_photo_price:"Photo set price, ₸",m_bio:"About",m_save:"Save",m_saved:"Profile saved",m_rate:"Rating",m_rev_ph:"Tell us about the collaboration",m_rev_send:"Leave a review",m_rev_sent:"Thanks for your review",m_rev_login:"Log in as a brand to leave a review.",m_rev_once:"You have already reviewed this creator.",e_exists:"This email is already registered. Please log in.",e_login:"Wrong email or password.",e_confirm:"Account created. Confirm your email via the link we sent, then log in.",e_confirm2:"Please confirm your email via the link we sent first.",e_cfg:"Server not connected: fill in SUPABASE_URL and SUPABASE_KEY in index.html.",e_load:"Could not load data from the server. Refresh the page.",brands_on:"Brands on the platform",no_brands:"No brands yet. Be the first to register.",e_net:"No connection to the server. Check your internet and try again.",e_save:"Could not save the file. Try a link or a smaller file.",def_vtitle:"Video",video_added:"Video added",video_deleted:"Video deleted",
 login_first:"Please log in first",write_to:"Write to {n}",describe:"Describe your task",desc_ph:"E.g. need a coffee review, 2 videos",send:"Send",
 e_desc:"Describe the task in at least a few words.",sent:"Message sent to {n}",profile_deleted:"Profile deleted",logged_out:"You logged out",
 tab_in:"Log in",tab_reg:"Sign up",i_biz:"I'm a business",i_cr:"I'm a creator",name:"Name",brand_name:"Brand name",your_name:"Your name",
@@ -318,6 +322,16 @@ const sb=async(path,o={})=>{
   await refreshS();
   const r=await fetch(baseU()+"/rest/v1/"+path,{...o,headers:{...sbH(S&&S.at),...(o.headers||{})}});
   const tx=await r.text();if(!r.ok)throw new Error(tx||r.status);return tx?JSON.parse(tx):null};
+/* Свой бэкенд: /api/* (Netlify Functions). Если сайт открыт локально без сервера — запасной путь напрямую в БД. */
+const API="/api/";
+const api=async(path,o={})=>{
+  await refreshS();
+  const h={"Content-Type":"application/json",...(o.headers||{})};if(S&&S.at)h.Authorization="Bearer "+S.at;
+  const r=await fetch(API+path,{...o,headers:h});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw Object.assign(new Error(j.error||r.status),{status:r.status,api:1});
+  return j};
+let STATS=null;
 const upsert=(tbl,row)=>S?sb(tbl+"?on_conflict=id",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(row)}):Promise.reject(new Error("auth"));
 const saveCr=x=>{const {own,email,...row}=x;return upsert("creators",{...row,owner_id:S&&S.uid})};
 const delCr=id=>sb("creators?id=eq."+id,{method:"DELETE",headers:{Prefer:"return=representation"}}).then(r=>{if(!r||!r.length)throw new Error("denied")});
@@ -345,7 +359,10 @@ const recalc=x=>{const rs=REV.filter(r=>r.cid===x.id);x.c=rs.length;x.r=rs.lengt
 async function loadCR(){
   try{
     await flushPend();
-    const [rows,bs,revs]=await Promise.all([sb("creators?select=*&order=id.desc"),sb("brands?select=id,name,owner_id&order=id.desc").catch(e=>{console.error("brands",e);return []}),sb("reviews?select=*&order=id.desc").catch(e=>{console.error("reviews",e);return []})]);
+    let rows,bs,revs;
+    try{({creators:rows,brands:bs,reviews:revs}=await api("data"))}
+    catch(e){console.warn("api/data недоступен, читаю БД напрямую",e);
+      [rows,bs,revs]=await Promise.all([sb("creators?select=*&order=id.desc"),sb("brands?select=id,name,owner_id&order=id.desc").catch(e=>{console.error("brands",e);return []}),sb("reviews?select=*&order=id.desc").catch(e=>{console.error("reviews",e);return []})])}
     CR.length=0;CR.push(...rows.map(cleanCr).filter(x=>x.n));
     BR.length=0;BR.push(...bs.map(b=>({id:num(b.id),name:String(b.name||""),own:S&&b.owner_id===S.uid?1:0})).filter(b=>b.name));
     REV.length=0;REV.push(...revs.map(cleanRev));CR.forEach(recalc);
@@ -386,6 +403,7 @@ function home(){
   <select id="hp"><option value="">${t("price")}</option>${[12000,15000,20000].map(p=>`<option value="${p}">${t("upto",{p:money(p)})}</option>`).join("")}</select>
   <select id="ht"><option value="">${t("ctype")}</option>${opt(["Видео","Фото"],"",typeL)}</select></div></div></div>
   <div class="vis" aria-hidden="true"><div class="ph0"><i>▶</i></div></div></div></div>
+  <div class="w" id="hst"></div>
   <div class="w sec" style="padding-bottom:0"><div class="fs">${fs.map((s,i)=>`<div>${s}${t("f"+(i+1))}</div>`).join("")}</div></div>
   <div class="w sec"><div class="row"><h2>${t("pop_cats")}</h2><button class="link" data-act="allcat">${t("all_cats")}</button></div>
   <div class="cats">${CATS.map(c=>`<button class="cat" data-cat="${c}">${catL(c)}</button>`).join("")}</div></div>
@@ -395,6 +413,8 @@ function home(){
   <div class="w sec" style="padding-top:0"><div class="row"><h2>${t("why")}</h2></div><div class="why">
   ${[1,2,3,4].map(i=>`<div><b>${t("w"+i+"t")}</b><p>${t("w"+i+"d")}</p></div>`).join("")}</div></div>
   <div class="w sec" style="padding-top:0"><div class="cta"><h2>${t("cta_cr")}</h2><button class="btn" data-go="/auth?m=reg&role=creator">${t("create_profile")}</button></div></div>`;
+  const st=s=>{const el=$("#hst");if(!el||!s)return;el.innerHTML=`<div class="stats4">${[["creators","st_cr"],["brands","st_br"],["reviews","st_rv"],["cities","st_ct"]].map(([k,l])=>`<div><b>${s[k]}</b><span>${t(l)}</span></div>`).join("")}</div>`};
+  st(STATS);api("stats").then(s=>{STATS=s;st(s)}).catch(()=>{});
   $("#hgo").onclick=()=>{F={...F,q:$("#hq").value,city:$("#hc").value,cat:$("#hk").value,price:$("#hp").value,type:$("#ht").value,fav:false};go("/catalog")};
 }
 
@@ -448,8 +468,8 @@ function creator(id){
     const b=$("#rs");if(b)b.onclick=async()=>{
       const txt=$("#rt").value.trim();if(txt.length<5)return $("#re").textContent=t("e_desc");
       b.disabled=true;const row={id:Date.now(),creator_id:x.id,author_id:S.uid,author_name:user.name,rating:+$("#rr").value,body:txt};
-      try{await sb("reviews",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify(row)})}
-      catch(err){console.error(err);b.disabled=false;return $("#re").textContent=t(/duplicate|23505/.test(err.message)?"m_rev_once":"e_net")}
+      try{const j=await api("reviews",{method:"POST",body:JSON.stringify({creator_id:x.id,rating:row.rating,body:txt})});Object.assign(row,j.review)}
+      catch(err){console.error(err);b.disabled=false;return $("#re").textContent=t(err.status==409||/duplicate|23505/.test(err.message)?"m_rev_once":"e_net")}
       REV.unshift(cleanRev(row));recalc(x);creator(x.id);toast(t("m_rev_sent"));
     };
   };fillRev();
@@ -511,7 +531,7 @@ function contact(id){
   <div class="err" id="me"></div><div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn g" data-act="close">${t("cancel")}</button><button class="btn" id="send">${t("send")}</button></div>`);
   $("#send").onclick=async()=>{const b=$("#msg").value.trim();if(b.length<5)return $("#me").textContent=t("e_desc");
     const bt=$("#send");bt.disabled=true;
-    try{await sb("messages",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({id:Date.now(),creator_id:x.id,from_id:S.uid,from_name:user.name,from_email:String(user.email||"").toLowerCase(),body:b})})}
+    try{await api("messages",{method:"POST",body:JSON.stringify({creator_id:x.id,body:b})})}
     catch(err){console.error(err);bt.disabled=false;return $("#me").textContent=t("e_net")}
     close();toast(t("sent",{n:x.n}))};
 }

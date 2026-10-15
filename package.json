@@ -1,0 +1,7 @@
+{
+  "name": "ugc-kz",
+  "private": true,
+  "type": "module",
+  "description": "UGC.KZ — маркетплейс креаторов для брендов Казахстана",
+  "engines": { "node": ">=18" }
+}
