@@ -95,3 +95,61 @@ create policy "ugc_videos_insert" on storage.objects for insert to authenticated
 create policy "ugc_videos_delete" on storage.objects for delete to authenticated
   using (bucket_id = 'videos' and (storage.foldername(name))[1] = auth.uid()::text);
 -- Ескерту: Supabase Free жоспарында бір файлдың шегі 50 МБ.
+
+-- 5) Тіркелген бойда профильді АВТОМАТТЫ жасау (триггер)
+--    Бұрын профиль браузерден жазылатын: email растау қосулы болса немесе адам
+--    басқа құрылғыдан кірсе — профиль жасалмай қалатын, сондықтан тіркелгендер көрінбейтін.
+create or replace function public.ugc_handle_new_user()
+returns trigger language plpgsql security definer set search_path = public as $$
+declare
+  m jsonb := coalesce(new.raw_user_meta_data, '{}'::jsonb);
+  nm text := nullif(trim(m->>'name'), '');
+  pr int  := coalesce(nullif(m->>'price','')::int, 0);
+  nid bigint := (extract(epoch from clock_timestamp()) * 1000)::bigint;
+begin
+  if nm is null then nm := split_part(new.email, '@', 1); end if;
+  if m->>'role' = 'creator' then
+    if not exists (select 1 from public.creators where owner_id = new.id) then
+      insert into public.creators (id, owner_id, n, city, t, p, ph, type, h)
+      values (nid, new.id, nm, coalesce(m->>'city',''),
+              jsonb_build_array(coalesce(m->>'cat','Другое')),
+              pr, round(pr/2.0)::int, coalesce(m->>'type','Видео'),
+              coalesce(nullif(m->>'h','')::int, (random()*330)::int));
+    end if;
+  else
+    if not exists (select 1 from public.brands where owner_id = new.id) then
+      insert into public.brands (id, owner_id, name) values (nid, new.id, nm);
+    end if;
+  end if;
+  return new;
+exception when others then
+  raise warning 'ugc_handle_new_user: %', sqlerrm;  -- тіркелуді бұзбау үшін
+  return new;
+end $$;
+
+drop trigger if exists ugc_on_auth_user_created on auth.users;
+create trigger ugc_on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.ugc_handle_new_user();
+
+-- 6) Бұрын тіркеліп, профилі сақталмай қалғандарды қалпына келтіру (бір рет)
+insert into public.creators (id, owner_id, n, city, t, p, ph, type, h)
+select (extract(epoch from u.created_at) * 1000)::bigint + row_number() over (),
+       u.id, coalesce(nullif(trim(u.raw_user_meta_data->>'name'),''), split_part(u.email,'@',1)),
+       coalesce(u.raw_user_meta_data->>'city',''),
+       jsonb_build_array(coalesce(u.raw_user_meta_data->>'cat','Другое')),
+       coalesce(nullif(u.raw_user_meta_data->>'price','')::int, 0),
+       round(coalesce(nullif(u.raw_user_meta_data->>'price','')::int, 0)/2.0)::int,
+       coalesce(u.raw_user_meta_data->>'type','Видео'), (random()*330)::int
+from auth.users u
+where u.raw_user_meta_data->>'role' = 'creator'
+  and not exists (select 1 from public.creators c where c.owner_id = u.id)
+on conflict (id) do nothing;
+
+insert into public.brands (id, owner_id, name)
+select (extract(epoch from u.created_at) * 1000)::bigint + row_number() over (),
+       u.id, coalesce(nullif(trim(u.raw_user_meta_data->>'name'),''), split_part(u.email,'@',1))
+from auth.users u
+where coalesce(u.raw_user_meta_data->>'role','biz') <> 'creator'
+  and not exists (select 1 from public.brands b where b.owner_id = u.id)
+on conflict (id) do nothing;

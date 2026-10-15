@@ -538,19 +538,19 @@ function auth(p){
       try{
         if(m=="reg"){
           let j;
-          try{j=await authReq("signup",{email:em,password:pw,data:{name:nm,role}})}
+          const meta={name:nm,role};
+          if(role=="creator"){const pr=+$("#apr").value;Object.assign(meta,{city:$("#ac").value,cat:$("#ak").value,type:$("#at").value,price:pr,h:Math.floor(Math.random()*330)})}
+          try{j=await authReq("signup",{email:em,password:pw,data:meta})}
           catch(err){console.error(err);return fail(err.cfg?"e_cfg":/exist|registered/i.test((err.code||"")+err.message)?"e_exists":"e_net")}
           const u=j.user||j;
           if(u.identities&&!u.identities.length)return fail("e_exists");
-          const tbl=role=="creator"?"creators":"brands";let row;
-          if(role=="creator"){const pr=+$("#apr").value;row={id:Date.now(),n:nm,r:0,c:0,city:$("#ac").value,v:"—",t:[$("#ak").value],p:pr,ph:Math.round(pr/2),type:$("#at").value,h:Math.floor(Math.random()*330),bio:"",vids:[],owner_id:u.id}}
-          else row={id:Date.now(),name:nm,owner_id:u.id};
-          sv("ugc_pend",{tbl,row});
+          /* профильді (creators/brands) дерекқордағы триггер өзі жасайды — supabase-setup.sql қараңыз */
+          sv("ugc_pend",null);
           if(!j.access_token){m="in";draw();const r=$("#ar");r.style.color="#0a7d3b";r.textContent=t("e_confirm");return}
           setS(j);user={name:nm,email:em,role,id:u.id};sv("ugc_u",user);
-          let saved=true;try{await upsert(tbl,row);sv("ugc_pend",null)}catch(err){console.error(err);saved=false}
-          await loadCR();head();toast(saved?t("acc_created"):t("e_net"));
-          return go(!saved?"/":role=="creator"?"/creator/"+row.id:"/brands");
+          await loadCR();head();toast(t("acc_created"));
+          const mine=CR.find(c=>c.own);
+          return go(role=="creator"&&mine?"/creator/"+mine.id:role=="creator"?"/catalog":"/brands");
         }
         let j;
         try{j=await authReq("token?grant_type=password",{email:em,password:pw})}

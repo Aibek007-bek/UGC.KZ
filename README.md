@@ -13,6 +13,8 @@ supabase-setup.sql    — Supabase-ке бір рет іске қосатын SQ
 
 1. [supabase.com](https://supabase.com) → жаңа жоба жасаңыз.
 2. **SQL Editor** → `supabase-setup.sql` мазмұнын қойып, **Run** басыңыз.
+   Бұл тіркелген бойда креатор/бренд профилін автоматты жасайтын триггерді қосады
+   және бұрын тіркеліп, профилі сақталмай қалғандарды қалпына келтіреді.
 3. **Project Settings → API**: `Project URL` мен `anon public` кілтін `index.html` жоғарындағы
    `SUPABASE_URL` және `SUPABASE_KEY` жолдарына қойыңыз.
    (anon кілт ашық болуы қалыпты — деректі RLS ережелері қорғайды. `service_role` кілтін ЕШҚАШАН қоймаңыз.)
