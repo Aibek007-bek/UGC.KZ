@@ -13,7 +13,7 @@ const CITIES = ["Актау","Актобе","Алматы","Астана","Ат�
 const json = (data, status = 200, extra = {}) =>
   new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*", ...extra },
+    headers: { "Content-Type": "application/json; charset=utf-8", "Access-Control-Allow-Origin": "*", "Cache-Control": "no-store", ...extra },
   });
 
 class HttpError extends Error { constructor(status, msg) { super(msg); this.status = status; } }
@@ -40,7 +40,7 @@ async function getUser(req) {
   if (!r.ok) throw new HttpError(401, "invalid_token");
   const u = await r.json();
   const m = u.user_metadata || {};
-  return { token, id: u.id, email: String(u.email || "").toLowerCase(), name: String(m.name || u.email.split("@")[0]).slice(0, 80), role: m.role || "biz" };
+  return { token, id: u.id, email: String(u.email || "").toLowerCase(), name: String(m.name || String(u.email || "").split("@")[0]).slice(0, 80), role: m.role || "biz" };
 }
 
 const num = (v, d = 0) => (Number.isFinite(+v) ? +v : d);
@@ -61,7 +61,7 @@ function withRatings(creators, reviews) {
 async function loadAll() {
   const [creators, brands, reviews] = await Promise.all([
     db("creators?select=*&order=id.desc"),
-    db("brands?select=id,name,owner_id,created_at&order=id.desc"),
+    db("brands?select=*&order=id.desc"),
     db("reviews?select=*&order=id.desc"),
   ]);
   return { creators: withRatings(creators, reviews), brands, reviews };
@@ -107,14 +107,113 @@ async function postMessage(req) {
   const u = await getUser(req);
   const b = await readBody(req);
   const text = String(b.body || "").trim();
-  const creatorId = num(b.creator_id);
   if (text.length < 5 || text.length > 2000) throw new HttpError(400, "body_length");
-  const [cr] = await db(`creators?select=id,owner_id&id=eq.${creatorId}`);
-  if (!cr) throw new HttpError(404, "creator_not_found");
-  if (cr.owner_id === u.id) throw new HttpError(400, "self_message");
-  const row = { id: Date.now(), creator_id: creatorId, from_id: u.id, from_name: u.name, from_email: u.email, body: text };
-  await db("messages", { method: "POST", body: row, token: u.token, prefer: "return=minimal" });
-  return json({ ok: true, message: row }, 201);
+  if ([b.creator_id,b.brand_id,b.recipient_id].filter(v=>v!==undefined && v!==null).length !== 1)
+    throw new HttpError(400, "one_recipient_required");
+  const row = { from_id:u.id, from_name:u.name, from_email:u.email, body:text };
+  if (b.recipient_id) {
+    if (!isUuid(b.recipient_id)) throw new HttpError(400,"invalid_recipient");
+    row.recipient_id = b.recipient_id;
+    if (row.recipient_id===u.id) throw new HttpError(400,"self_message");
+  } else {
+    const kind=b.brand_id!==undefined?"brand":"creator", id=positiveId(b[kind+"_id"]);
+    const [profile]=await db(`${kind==="brand"?"brands":"creators"}?select=id,owner_id&id=eq.${id}`);
+    if (!profile || !profile.owner_id) throw new HttpError(404,"recipient_not_found");
+    if (profile.owner_id===u.id) throw new HttpError(400,"self_message");
+    row[kind+"_id"]=id;
+  }
+  // The database resolves the recipient and overwrites sender identity itself.
+  const [saved]=await db("messages", {method:"POST",body:row,token:u.token,prefer:"return=representation"});
+  return json({ok:true,message:saved},201);
+}
+
+const isUuid = value => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(value));
+function positiveId(value) {
+  const id=Number(value);
+  if (!Number.isSafeInteger(id) || id<=0) throw new HttpError(400,"invalid_id");
+  return id;
+}
+const rpc=(name,body,token)=>db("rpc/"+name,{method:"POST",body,token});
+async function requireActive(u) {
+  if(await rpc("ugc_is_suspended",{},u.token)) throw new HttpError(403,"account_suspended");
+}
+async function requireAdmin(req) {
+  const u=await getUser(req);
+  if (!await rpc("ugc_is_admin",{},u.token)) throw new HttpError(403,"admin_required");
+  return u;
+}
+async function myProfiles(req) {
+  const u=await getUser(req);
+  const [creators,brands,admin,suspended]=await Promise.all([
+    db(`creators?select=*&owner_id=eq.${u.id}`,{token:u.token}),
+    db(`brands?select=*&owner_id=eq.${u.id}`,{token:u.token}),
+    rpc("ugc_is_admin",{},u.token),rpc("ugc_is_suspended",{},u.token)
+  ]);
+  return json({creators,brands,admin,suspended});
+}
+async function patchProfile(req) {
+  const u=await getUser(req); await requireActive(u);
+  const b=await readBody(req), kind=b.kind;
+  if(!["creator","brand"].includes(kind)) throw new HttpError(400,"invalid_profile_type");
+  const id=positiveId(b.id), table=kind==="creator"?"creators":"brands", fields={};
+  const name=String(b.name||"").trim(), bio=String(b.bio||"").trim(), city=String(b.city||"").trim();
+  if(!name || name.length>80 || bio.length>1000 || city.length>80) throw new HttpError(400,"invalid_profile");
+  Object.assign(fields,{[kind==="creator"?"n":"name"]:name,bio,city});
+  if (b.avatar_path!==undefined) {
+    const avatar=String(b.avatar_path);
+    if(avatar && (!/^[0-9a-f-]{36}\/[0-9a-f-]{36}\.(jpg|png|webp)$/.test(avatar) || !avatar.startsWith(u.id+"/")))
+      throw new HttpError(400,"invalid_avatar");
+    fields.avatar_path=avatar;
+  }
+  if(kind==="creator") {
+    for(const [key,min] of [["p",1000],["ph",500]]) {
+      const n=Number(b[key]); if(!Number.isSafeInteger(n)||n<min||n>100000000) throw new HttpError(400,"invalid_price"); fields[key]=n;
+    }
+    if(!Array.isArray(b.t)||!b.t.length||b.t.length>8||b.t.some(x=>typeof x!=="string"||x.length>80)) throw new HttpError(400,"invalid_category");
+    if(!["Видео","Фото"].includes(b.type)) throw new HttpError(400,"invalid_content_type");
+    fields.t=b.t; fields.type=b.type;
+  } else {
+    const website=String(b.website||"").trim();
+    if(website && (website.length>300 || !/^https:\/\/[^\s]+$/i.test(website))) throw new HttpError(400,"invalid_website");
+    if(website) { try { const parsed=new URL(website); if(parsed.username||parsed.password||!parsed.hostname) throw 0; } catch {throw new HttpError(400,"invalid_website");} }
+    fields.website=website?new URL(website).href:'';
+  }
+  const rows=await db(`${table}?id=eq.${id}&owner_id=eq.${u.id}`,{method:"PATCH",body:fields,token:u.token,prefer:"return=representation"});
+  if(!rows.length) throw new HttpError(404,"profile_not_found");
+  return json({profile:rows[0]});
+}
+async function getMessages(req,url) {
+  const u=await getUser(req);
+  const before=url.searchParams.get("before");
+  const rows=await db(`messages?select=*&or=(from_id.eq.${u.id},recipient_id.eq.${u.id})&order=id.desc&limit=100${before?"&id=lt."+positiveId(before):""}`,{token:u.token});
+  return json({items:rows,next_before:rows.length===100?rows.at(-1).id:null});
+}
+async function markRead(req) {
+  const u=await getUser(req), b=await readBody(req);
+  if(!isUuid(b.sender_id)) throw new HttpError(400,"invalid_sender");
+  await db(`messages?recipient_id=eq.${u.id}&from_id=eq.${b.sender_id}&read_at=is.null`,{method:"PATCH",body:{read_at:new Date().toISOString()},token:u.token});
+  return json({ok:true});
+}
+async function profileStats(req,url) {
+  const u=await getUser(req),kind=url.searchParams.get("kind");
+  if(!["creator","brand"].includes(kind)) throw new HttpError(400,"invalid_profile_type");
+  return json(await rpc("ugc_profile_stats",{kind,profile:positiveId(url.searchParams.get("id"))},u.token));
+}
+async function recordView(req) {
+  const b=await readBody(req);
+  if(!["creator","brand"].includes(b.kind)||!isUuid(b.visitor_key)) throw new HttpError(400,"invalid_view");
+  // Anonymous view records are intentionally estimates, deduplicated per browser/day.
+  const token=(req.headers.get("authorization")||"").replace(/^Bearer\s+/i,"");
+  await rpc("ugc_record_view",{kind:b.kind,profile:positiveId(b.id),visitor_key:b.visitor_key},token||undefined);
+  return json({ok:true});
+}
+async function moderate(req) {
+  const u=await requireAdmin(req), b=await readBody(req);
+  if(!["creator","brand","user"].includes(b.kind)||typeof b.enabled!=="boolean") throw new HttpError(400,"invalid_moderation");
+  const target=b.kind==="user"?b.target:String(positiveId(b.target));
+  if(b.kind==="user"&&!isUuid(target)) throw new HttpError(400,"invalid_target");
+  await rpc("ugc_admin_moderate",{kind:b.kind,target,enabled:b.enabled},u.token);
+  return json({ok:true});
 }
 
 // POST /api/reviews — бренд оставляет отзыв креатору (1 раз)
@@ -141,7 +240,7 @@ export default async (req) => {
   const key = `${req.method} ${route}`;
   try {
     if (req.method === "OPTIONS")
-      return new Response(null, { status: 204, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, content-type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS" } });
+      return new Response(null, { status: 204, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, content-type", "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS" } });
     switch (key) {
       case "GET health":
         return json({ ok: true, service: "ugc-kz-api", time: new Date().toISOString() });
@@ -153,7 +252,18 @@ export default async (req) => {
         return json({ count: list.length, items: list });
       }
       case "GET brands":
-        return json(await db("brands?select=id,name,created_at&order=id.desc"));
+        return json(await db("brands?select=*&order=id.desc"));
+      case "GET profile/me": return await myProfiles(req);
+      case "PATCH profile": return await patchProfile(req);
+      case "GET profile/stats": return await profileStats(req,url);
+      case "POST profile/view": return await recordView(req);
+      case "GET messages": return await getMessages(req,url);
+      case "PATCH messages/read": return await markRead(req);
+      case "GET admin": {
+        const u=await requireAdmin(req);
+        return json(await rpc("ugc_admin_overview",{},u.token));
+      }
+      case "POST admin/moderate": return await moderate(req);
       case "GET stats":
         return json(stats(await loadAll()), 200, { "Cache-Control": "public, max-age=30" });
       case "GET cities":

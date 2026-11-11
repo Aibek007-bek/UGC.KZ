@@ -120,6 +120,7 @@ a{color:inherit;text-decoration:none}
 .lang{border-radius:99px;padding:7px 12px;font-weight:600;font-size:13px;color:var(--b);border-color:var(--line);cursor:pointer}
 
 </style>
+<link rel="stylesheet" href="profile-features.css">
 </head>
 <body>
 <header><div class="w">
@@ -362,9 +363,9 @@ async function loadCR(){
     let rows,bs,revs;
     try{({creators:rows,brands:bs,reviews:revs}=await api("data"))}
     catch(e){console.warn("api/data недоступен, читаю БД напрямую",e);
-      [rows,bs,revs]=await Promise.all([sb("creators?select=*&order=id.desc"),sb("brands?select=id,name,owner_id&order=id.desc").catch(e=>{console.error("brands",e);return []}),sb("reviews?select=*&order=id.desc").catch(e=>{console.error("reviews",e);return []})])}
+      [rows,bs,revs]=await Promise.all([sb("creators?select=*&order=id.desc"),sb("brands?select=*&order=id.desc").catch(e=>{console.error("brands",e);return []}),sb("reviews?select=*&order=id.desc").catch(e=>{console.error("reviews",e);return []})])}
     CR.length=0;CR.push(...rows.map(cleanCr).filter(x=>x.n));
-    BR.length=0;BR.push(...bs.map(b=>({id:num(b.id),name:String(b.name||""),own:S&&b.owner_id===S.uid?1:0})).filter(b=>b.name));
+    BR.length=0;BR.push(...bs.map(cleanBrand).filter(b=>b.name));
     REV.length=0;REV.push(...revs.map(cleanRev));CR.forEach(recalc);
     loadErr="";return true;
   }catch(e){console.error("loadCR",e);loadErr=e.cfg?"e_cfg":"e_load";return false}
@@ -376,13 +377,13 @@ const bg=x=>`linear-gradient(${x.h}deg,hsl(${x.h},75%,38%),hsl(${x.h+30},80%,62%
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2400)}
 function modal(h){$("#mb").innerHTML=h;$("#modal").classList.add("on")}
 function close(){$("#modal").classList.remove("on")}
-function go(p){location.hash="#"+p}
+function go(p){if(location.hash==="#"+p)route();else location.hash="#"+p}
 function head(){
   $("#fc").textContent=favs.length;
   $("#auth").innerHTML=user?`<span style="margin-right:10px;font-size:14px">${esc(user.name)}</span><button class="btn o sm" data-go="/inbox" style="margin-right:6px">${t("m_inbox")}</button><button class="btn o sm" data-act="out">${t("logout")}</button>`
    :`<button class="btn o sm" data-go="/auth?m=in">${t("login")}</button> <button class="btn sm" data-go="/auth?m=reg">${t("register")}</button>`;
 }
-function card(x){return `<article class="card" data-go="/creator/${x.id}"><div class="ph" style="background:${bg(x)}">${esc(x.n[0])}
+function card(x){return `<article class="card" role="link" tabindex="0" aria-label="${esc(x.n)}" data-go="/creator/${x.id}"><div class="ph" style="background:${bg(x)}">${avatarHTML(x,x.n)}
 <button class="heart ${favs.includes(x.id)?"on":""}" data-fav="${x.id}" aria-label="${t("fav_aria")}">${favs.includes(x.id)?"♥":"♡"}</button></div>
 <div class="cb"><div class="top">${esc(x.n)}<small>${esc(x.v)}</small></div><div class="meta">${x.c?`★ ${x.r} (${x.c}) · `:t("new")+" · "}${esc(cityL(x.city))}</div>
 <div class="chips">${x.t.map(c=>`<span>${esc(catL(c))}</span>`).join("")}</div><div class="pr">${t("from",{p:money(x.p)})}<small>${t("per_video")}</small></div></div></article>`}
@@ -452,14 +453,14 @@ function creator(id){
   const delBtn=v=>own?`<button class="link" data-act="delvid" data-id="${x.id}" data-v="${v.id}" aria-label="${t("del_video")}">✕</button>`:"";
   $("#app").innerHTML=`<div class="w"><div class="pf"><div>
   <button class="link" data-go="/catalog" style="margin-bottom:14px">${t("back")}</button>
-  <div class="box"><div class="hd"><div class="av" style="background:${bg(x)}">${esc(x.n[0])}</div><div><h1>${esc(x.n)}</h1>
+  <div class="box"><div class="hd"><div class="av" style="background:${bg(x)}">${avatarHTML(x,x.n)}</div><div><h1>${esc(x.n)}</h1>
   <div style="color:var(--mut)">${x.c?t("reviews_n",{r:x.r,c:x.c})+" · ":t("new_cr")+" · "}${esc(cityL(x.city))}</div></div></div>
   <p style="margin:16px 0 10px">${x.bio?esc(x.bio):t("def_bio")}</p><div class="chips">${x.t.map(c=>`<span>${esc(catL(c))}</span>`).join("")}</div></div>
   <div class="box"><div class="row"><h2>${t("portfolio")}</h2>${own?`<button class="btn sm" data-act="addvid" data-id="${x.id}">${t("add_video")}</button>`:""}</div>${(x.vids||[]).length?`<div class="port">${x.vids.map(v=>v.s?`<div class="vt"><video controls playsinline preload="metadata" src="${esc(v.u)}"></video><span>${esc(v.t)}${delBtn(v)}</span></div>`:v.u?`<a class="vt" href="${esc(v.u)}" target="_blank" rel="noopener noreferrer"><b style="margin:auto;font-size:30px">▶</b><span>${esc(v.t)}${delBtn(v)}</span></a>`:`<div class="vt"><video controls playsinline preload="metadata" data-vid="${v.id}"></video><span>${esc(v.t)}${delBtn(v)}</span></div>`).join("")}</div>`:`<p style="color:var(--mut)">${t("no_videos")}</p>`}</div>
   <div class="box" id="rvb"></div></div>
   <aside class="box" style="position:sticky;top:84px"><h2 style="margin-bottom:10px">${t("cost")}</h2>
   <div class="pk"><span>${t("video_ugc")}</span><b>${money(x.p)}</b></div><div class="pk"><span>${t("photo_set")}</span><b>${money(x.ph)}</b></div>
-  <div style="display:grid;gap:10px;margin-top:18px">${own?`<button class="btn" data-act="editcr" data-id="${x.id}">${t("m_edit")}</button>`:`<button class="btn" data-contact="${x.id}">${t("contact")}</button>`}
+  <div style="display:grid;gap:10px;margin-top:18px">${own?`<button class="btn" data-act="editcr" data-id="${x.id}">${t("m_edit")}</button><button class="btn o" data-go="/account">${ux('stats')}</button>`:`<button class="btn" data-contact="${x.id}">${t("contact")}</button>`}
   ${own?`<button class="btn g" data-act="delcr" data-id="${x.id}">${t("del_profile")}</button>`:""}<button class="btn o" data-fav="${x.id}">${favs.includes(x.id)?t("in_fav"):t("add_fav")}</button></div></aside></div></div>`;
   const fillRev=()=>{
     const rs=REV.filter(r=>r.cid===x.id),done=user&&S&&rs.some(r=>r.aid===S.uid),can=user&&S&&user.role=="biz"&&!own&&!done;
@@ -611,13 +612,14 @@ function about(){
 }
 
 </script>
+<script src="profile-features.js"></script>
 <script>
 /* Роутер и обработчики кликов (подключается последним) */
 function route(){
   const [path,qs]=(location.hash.slice(1)||"/").split("?"),p=new URLSearchParams(qs||""),s=path.split("/").filter(Boolean);
   applyStatic();head();scrollTo(0,0);
   document.querySelectorAll("nav a").forEach(a=>{const g=a.dataset.go.split("?")[0];a.classList.toggle("on",g=="/"+(s[0]=="creator"?"catalog":s[0]||""))});
-  if(!s.length)home();else if(s[0]=="catalog")catalog();else if(s[0]=="creator")creator(s[1]);else if(s[0]=="auth")auth(p);else if(s[0]=="brands")brands();else if(s[0]=="about")about();else if(s[0]=="inbox")inbox();else go("/");
+  if(!s.length)home();else if(s[0]=="catalog")catalog();else if(s[0]=="creator")creator(s[1]);else if(s[0]=="auth")auth(p);else if(s[0]=="brands")brands();else if(s[0]=="brand")brandProfile(s[1]);else if(s[0]=="account")myAccount();else if(s[0]=="admin")adminDashboard();else if(s[0]=="about")about();else if(s[0]=="inbox")inbox();else go("/");
 }
 function toggleFav(id){favs=favs.includes(id)?favs.filter(f=>f!==id):[...favs,id];sv("ugc_f",favs);head()}
 document.addEventListener("click",e=>{

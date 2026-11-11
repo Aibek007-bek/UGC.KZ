@@ -1,4 +1,5 @@
--- UGC.KZ: Supabase → SQL Editor ішінде бір рет іске қосыңыз (қайта іске қосуға болады)
+-- UGC.KZ: жаңа жоба үшін Supabase → SQL Editor ішінде іске қосыңыз.
+-- Содан кейін supabase-upgrade.sql орындаңыз. Жұмыс істеп тұрған сайтта тек upgrade қолданыңыз.
 
 -- 1) Кестелер
 create table if not exists public.creators (
